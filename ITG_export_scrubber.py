@@ -177,9 +177,9 @@ for file in input_files:
         sheet.append(row)
     for col in sheet.columns:
         max_length = 0
-        column = col[0].column_letter  # Get the column name
+        column = col[0].column_letter
         for cell in col:
-            try:  # Necessary to avoid error on empty cells
+            try:
                 if len(str(cell.value)) > max_length:
                     max_length = len(str(cell.value))
             except:
