@@ -87,8 +87,7 @@ wb = Workbook()
 wb_file = working_dir + f'{customer_name}_export.xlsx'
 if os.path.exists(wb_file):
     os.remove(wb_file)
-else:
-    wb.save(wb_file)
+wb.save(wb_file)
 
 
 # Create the output Excel workbook file based on name of input zip
@@ -120,10 +119,6 @@ for file in input_files:
                 new_row.append(cell)
             working_rows.append(new_row)
 
-
-    # Remove any column in the delete column variable or empty columns
-
-
     # Find the archive column and keep track of it
     for index, value in enumerate(headers):
         if value == 'archived':
@@ -136,7 +131,7 @@ for file in input_files:
         if value[archive_index] == 'Yes':
             del working_rows[top_index_current - index]
 
-    # go through and delete and configuration with a
+    # go through and delete any configuration with a
     # configuration_status other than "Active"
 
     # Find empty columns
