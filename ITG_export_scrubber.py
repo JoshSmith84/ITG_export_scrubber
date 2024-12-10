@@ -162,18 +162,15 @@ for file in input_files:
     for row in working_rows:
         new_row = []
         for i in range(len(row)):
-            if headers[i] in delete_columns:
-                continue
-            else:
+            if headers[i] not in delete_columns:
                 new_row.append(row[i])
+
         clean_rows.append(new_row)
 
     # Clean up headers to match
     new_headers = []
     for header in headers:
-        if header in delete_columns:
-            continue
-        else:
+        if header not in delete_columns:
             new_headers.append(header)
 
     # Open customer workbook and add new sheet
