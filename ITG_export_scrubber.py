@@ -18,16 +18,18 @@ import unicodedata
 from bs4 import BeautifulSoup
 from zipfile import ZipFile
 from openpyxl import Workbook, load_workbook
-from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font, PatternFill
 import logging
 
+# Logging config
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %'
                                                 '(levelname)s - %'
                                                 '(message)s'
                     )
 
+# Logging trigger
 logging.disable(logging.CRITICAL)
+
 # Get input directory (tkinter)
 
 # Iterate through every zip file (outer loop)
@@ -63,7 +65,7 @@ if 'backups-managed.csv' in input_files:
 logging.debug(f'original list: {input_files}\n')
 
 # Trim the list of working csvs down to what needs to be shared
-top_index_input_files = len(input_files) -1
+top_index_input_files = len(input_files) - 1
 for index, value in enumerate(reversed(input_files)):
     if value not in keep_csv:
         del input_files[top_index_input_files - index]
@@ -90,7 +92,8 @@ wb.save(wb_file)
 # (function; inner loop)
 # Iterate through every remaining csv, and make changes in memory
 for file in input_files:
-    # Reset columns to delete for each iteration,
+    # Reset columns to delete list (columns that always are deleted)
+    # for each iteration,
     # so new can be added as empty columns are detected
     delete_columns = ['id', 'organization', 'Category',
                       'Business Impact', 'Client Subject Matter Expert',
@@ -104,6 +107,7 @@ for file in input_files:
                       'installed_by', 'Equipment make & Model',
                       'Printer Name',
                       ]
+
     # Continue with unpacking current csv to list of lists
     working_rows = []
     with open(export_dir + file, 'r', encoding='utf-8') as csv_file:
@@ -146,7 +150,7 @@ for file in input_files:
             delete_columns.append(headers[i])
     logging.debug(f'Columns to delete: {delete_columns}\n')
 
-    # Delete all blank column index from every row and headers
+    # Delete all blank column index from every row
     clean_rows = []
     for row in working_rows:
         new_row = []
@@ -170,7 +174,7 @@ for file in input_files:
     sheet_name = file.split('.')[0]
     sheet = wb.create_sheet(sheet_name)
 
-    # Output what remains to Sheet
+    # Output clean headers and data to Sheet
     sheet.append(new_headers)
     for row in clean_rows:
         sheet.append(row)
