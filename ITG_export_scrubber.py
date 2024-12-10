@@ -48,6 +48,13 @@ keep_csv = [
 html_detection = ['<div>', '<br>', '<p>', '<tr>', '<tbody>', '<td>',
                   '<ol>', '<li>' '<a>', '<ul>',
                   ]
+header_blue = '3498DB'
+light_blue = 'D6EAF8'
+h_blue_fill = PatternFill(
+    start_color=header_blue, end_color=header_blue, fill_type='solid')
+l_blue_fill = PatternFill(
+    start_color=light_blue, end_color=light_blue, fill_type='solid')
+font_header = Font(size=12)
 
 # Unzip input
 with ZipFile(input_zip, 'r') as zip:
@@ -193,6 +200,23 @@ for file in input_files:
             max_length = 50
         adjusted_width = (max_length + 2) * 1.2
         sheet.column_dimensions[column].width = adjusted_width
+
+    # Further sheet formatting
+    for cell in sheet['1:1']:
+        cell.font = font_header
+        # cell.fill = h_blue_fill
+    sheet.freeze_panes = 'A2'
+    row_count = sheet.max_row
+    column_count = sheet.max_column
+
+    # Commenting out for now, this solution is ugly once
+    # data is sorted after the fact
+
+    # for x in range(1, column_count + 1):
+    #     for i in range(1, row_count + 1):
+    #         c = sheet.cell(row=i, column=x)
+    #         if i % 2 == 0:
+    #             c.fill = l_blue_fill
     wb.save(wb_file)
 
 # Delete the starting "Blank" sheet and delete temp files
