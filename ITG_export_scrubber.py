@@ -36,7 +36,7 @@ logging.disable(logging.CRITICAL)
 
 # Define global variables
 working_dir = "U:\\Joshua\\Work-Stuff\\ITG stuff\\example_exports\\"
-input_zip = f"{working_dir}export 3.zip"
+input_zip = f"{working_dir}export 1.zip"
 export_dir = f"{working_dir}temp\\"
 keep_csv = [
     'applications-licensing.csv', 'backup.csv', 'backups-managed.csv',
