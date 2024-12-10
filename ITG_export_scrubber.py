@@ -132,20 +132,32 @@ for file in input_files:
 
     # Find the archive column and keep track of it
     # (it's usually last but not always)
+
+    # Also find config status column
     archive_index = -1
+    configuration_status_index = 0
     for index, value in enumerate(headers):
         if value == 'archived':
             archive_index = index
+        if file == 'configurations.csv':
+            if value == 'configuration_status':
+                configuration_status_index = index
     logging.debug(f'File: {file}. Archive index #: {archive_index}\n')
 
     # go through every row and delete any row with archive set to 'Yes'
+    # and any configuration status in configurations csv other than Active
     top_index_current = len(working_rows) - 1
     for index, value in enumerate(reversed(working_rows)):
         if value[archive_index] == 'Yes':
             del working_rows[top_index_current - index]
+        if configuration_status_index != 0:
+            if value[configuration_status_index] != 'Active':
+                logging.debug(
+                    f'Deleting File: {file}. config status index #:'
+                    f' {configuration_status_index}'
+                    f'Value: {value}\n')
+                del working_rows[top_index_current - index]
 
-    # go through and delete any configuration with a
-    # configuration_status other than "Active"
 
     # Find empty columns
     for i in range(len(headers)):
