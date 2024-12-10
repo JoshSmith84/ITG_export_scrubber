@@ -99,7 +99,7 @@ for file in input_files:
                       'Business Impact', 'Client Subject Matter Expert',
                       'Importance', 'archived',
                       'Backup Estimated Start Date',
-                      'FlexAssset Review Date',
+                      'FlexAssset Review Date', 'FlexAsset Review Date',
                       'Backup Radar Reporting Schedule', 'hostname',
                       'manufacturer', 'position', 'contact', 'location',
                       'configuration_interfaces', 'DHCP Exclusions',
