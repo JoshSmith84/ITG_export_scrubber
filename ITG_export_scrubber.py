@@ -32,39 +32,37 @@ logging.disable(logging.CRITICAL)
 
 # Iterate through every zip file (outer loop)
 
-# Define variables
+# Define global variables
 working_dir = "U:\\Joshua\\Work-Stuff\\ITG stuff\\example_exports\\"
-input_zip = f"{working_dir}ParkerParker.zip"
+input_zip = f"{working_dir}export 3.zip"
 export_dir = f"{working_dir}temp\\"
 keep_csv = [
     'applications-licensing.csv', 'backup.csv', 'backups-managed.csv',
     'battery-backup-ups.csv', 'configurations.csv', 'domain-hosting.csv',
     'email.csv', 'file-sharing.csv', 'internet-wan.csv', 'lan.csv',
-    'passwords.csv', 'printing.csv', 'remote-access.csv', 'vendors.csv',
+    'passwords.csv', 'printing.csv', 'vendors.csv',
     'voice-pbx-fax.csv', 'wireless.csv',
             ]
 html_detection = ['<div>', '<br>', '<p>', '<tr>', '<tbody>', '<td>',
                   '<ol>', '<li>' '<a>', '<ul>',
                   ]
 
-
 # Unzip input
 with ZipFile(input_zip, 'r') as zip:
     zip.extractall(export_dir)
 
-
-# Ignore unneeded csv's (if backups-managed exists, delete backups;
-# otherwise do not delete backups)
+# Gather list of files
 input_files = []
-delete_backup_csv = 0
 for file in os.listdir(export_dir):
     input_files.append(file)
 
+# Delete the deprecated backup csv if backups-managed is present
+delete_backup_csv = 0
 if 'backups-managed.csv' in input_files:
     delete_backup_csv += 1
 logging.debug(f'original list: {input_files}\n')
 
-
+# Trim the list of working csvs down to what needs to be shared
 top_index_input_files = len(input_files) -1
 for index, value in enumerate(reversed(input_files)):
     if value not in keep_csv:
@@ -75,36 +73,38 @@ for index, value in enumerate(reversed(input_files)):
         continue
 logging.debug(f'edited list: {input_files}\n')
 
-# from any of the csvs, pull customer name from column B
+# From any of the csvs, pull customer name from column B
 with open(export_dir + input_files[0], 'r', encoding='utf-8') as csv_file:
     headers = csv_file.readline().strip('\n').split(',')
     reader = csv.reader(csv_file)
     customer_name = list(reader)[0][1]
     logging.debug(f'Customer name: {customer_name}\n')
 
-# Now that customer name is pulled, create workbook
+# Create the output Excel workbook file based on name of the company
 wb = Workbook()
 wb_file = working_dir + f'{customer_name}_export.xlsx'
 if os.path.exists(wb_file):
     os.remove(wb_file)
 wb.save(wb_file)
 
-
-# Create the output Excel workbook file based on name of input zip
-
 # (function; inner loop)
-# Iterate through every remaining csv, pulling all data into list of lists
-#   while keeping track of headers.
+# Iterate through every remaining csv, and make changes in memory
 for file in input_files:
+    # Reset columns to delete for each iteration,
+    # so new can be added as empty columns are detected
     delete_columns = ['id', 'organization', 'Category',
                       'Business Impact', 'Client Subject Matter Expert',
-                      'Importance', 'archived', 'Backup Estimated Start Date',
+                      'Importance', 'archived',
+                      'Backup Estimated Start Date',
                       'FlexAssset Review Date',
                       'Backup Radar Reporting Schedule', 'hostname',
                       'manufacturer', 'position', 'contact', 'location',
                       'configuration_interfaces', 'DHCP Exclusions',
-                      'one_time_password',
+                      'one_time_password', 'Printer Management Login',
+                      'installed_by', 'Equipment make & Model',
+                      'Printer Name',
                       ]
+    # Continue with unpacking current csv to list of lists
     working_rows = []
     with open(export_dir + file, 'r', encoding='utf-8') as csv_file:
         headers = csv_file.readline().strip('\n').split(',')
@@ -120,6 +120,8 @@ for file in input_files:
             working_rows.append(new_row)
 
     # Find the archive column and keep track of it
+    # (it's usually last but not always)
+    archive_index = -1
     for index, value in enumerate(headers):
         if value == 'archived':
             archive_index = index
@@ -144,7 +146,6 @@ for file in input_files:
             delete_columns.append(headers[i])
     logging.debug(f'Columns to delete: {delete_columns}\n')
 
-
     # Delete all blank column index from every row and headers
     clean_rows = []
     for row in working_rows:
@@ -156,6 +157,7 @@ for file in input_files:
                 new_row.append(row[i])
         clean_rows.append(new_row)
 
+    # Clean up headers to match
     new_headers = []
     for header in headers:
         if header in delete_columns:
@@ -167,9 +169,13 @@ for file in input_files:
     wb = load_workbook(wb_file)
     sheet_name = file.split('.')[0]
     sheet = wb.create_sheet(sheet_name)
+
+    # Output what remains to Sheet
     sheet.append(new_headers)
     for row in clean_rows:
         sheet.append(row)
+
+    # Find and set uniform column width
     for col in sheet.columns:
         max_length = 0
         column = col[0].column_letter
@@ -185,15 +191,12 @@ for file in input_files:
         sheet.column_dimensions[column].width = adjusted_width
     wb.save(wb_file)
 
+# Delete the starting "Blank" sheet and delete temp files
 wb = load_workbook(wb_file)
 del wb['Sheet']
 wb.save(wb_file)
 shutil.rmtree(export_dir)
 
-
-# Go through those lists inspecting every string and scrubbing html data
-#   while leaving true data.
-# Output what remains to Sheet in workbook based on name of input csv
 # Format sheet
 
 # Zip the output workbook; restart outer loop
