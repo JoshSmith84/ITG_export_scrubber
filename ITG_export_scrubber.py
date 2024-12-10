@@ -82,7 +82,7 @@ with open(export_dir + input_files[0], 'r', encoding='utf-8') as csv_file:
     customer_name = list(reader)[0][1]
     logging.debug(f'Customer name: {customer_name}\n')
 
-# Create the output Excel workbook file based on name of the company
+# Create output Excel workbook file based on name of the company
 wb = Workbook()
 wb_file = working_dir + f'{customer_name}_export.xlsx'
 if os.path.exists(wb_file):
