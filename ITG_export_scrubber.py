@@ -30,7 +30,7 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %'
 # Logging trigger
 logging.disable(logging.CRITICAL)
 
-# Get input directory (tkinter)
+
 
 # Iterate through every zip file (outer loop)
 
