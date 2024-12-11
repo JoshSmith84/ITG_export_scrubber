@@ -110,7 +110,7 @@ class AppPage(ttk.Frame):
             try:
                 data[key] = variable.get()
             except tk.TclError:
-                message = f'Error in field: {key}. Data was not saved!'
+                message = f'Error in field: {key}.'
                 raise ValueError(message)
         return data
 
@@ -173,8 +173,19 @@ class MainPage(AppPage):
             self, textvariable=self.status
         ).grid(sticky=(tk.W + tk.E), row=4, padx=10)
 
-    def process_exports(self, input_zip, post_task, zip_task):
-        """Main processing loop"""
+    def process_exports(self, input_zip, post_task, zip_task) -> None:
+        """Main processing method. Take a TPG ITG export, unzip it,
+        ignore unneeded data, clean left over csv's of empty columns,
+        and make it readable
+
+        :param input_zip: any zip file. Non ITG exports will be unzipped,
+                        and ignored once contents are detected as invalid.
+        :param post_task: Option to either delete or keep input zip
+                        when processing is complete.
+        :param zip_task: Option to either zip the output or not
+                        when processing is complete.
+        :return: None
+        """
 
         keep_csv = [
             'applications-licensing.csv', 'backup.csv', 'backups-managed.csv',
@@ -209,7 +220,7 @@ class MainPage(AppPage):
         for file in os.listdir(export_dir):
             input_files.append(file)
 
-        # Delete the deprecated backup csv if backups-managed is present
+        # Detect if backups-managed is present
         delete_backup_csv = 0
         if 'backups-managed.csv' in input_files:
             delete_backup_csv += 1
@@ -248,9 +259,8 @@ class MainPage(AppPage):
         # (function; inner loop)
         # Iterate through every remaining csv, and make changes in memory
         for file in input_files:
-            # Reset columns to delete list (columns that always are deleted)
-            # for each iteration,
-            # so new can be added as empty columns are detected
+            # Reset columns to delete list
+            # (columns that always are deleted/ignored)
             delete_columns = ['id', 'organization', 'Category',
                               'Business Impact', 'Client Subject Matter Expert',
                               'Importance', 'archived',
@@ -281,7 +291,6 @@ class MainPage(AppPage):
 
             # Find the archive column and keep track of it
             # (it's usually last but not always)
-
             # Also find config status column
             archive_index = -1
             configuration_status_index = 0
@@ -294,7 +303,8 @@ class MainPage(AppPage):
             logging.debug(f'File: {file}. Archive index #: {archive_index}\n')
 
             # go through every row and delete any row with archive set to 'Yes'
-            # and any configuration status in configurations csv other than Active
+            # and any configuration status in configurations csv
+            # other than Active
             top_index_current = len(working_rows) - 1
             for index, value in enumerate(reversed(working_rows)):
                 if value[archive_index] == 'Yes':
@@ -317,7 +327,7 @@ class MainPage(AppPage):
                     delete_columns.append(headers[i])
             logging.debug(f'Columns to delete: {delete_columns}\n')
 
-            # Delete all blank column index from every row
+            # Ignore all blank columns
             clean_rows = []
             for row in working_rows:
                 new_row = []
@@ -388,19 +398,13 @@ class MainPage(AppPage):
 
         self.status.set(f'Processing of {customer_name} complete.')
 
-        # To zip or not to zip
+        # To zip or not to zip output file (needs to be zipped for email)
         if zip_task == 'Yes':
             with zipfile.ZipFile(
                     f'{working_dir}/'
                     f'{customer_name}_export.zip', 'w') as f:
                 f.write(wb_file, basename(wb_file))
             os.remove(wb_file)
-
-
-    @staticmethod
-    def _on_quit():
-        """Command to exit program"""
-        sys.exit()
 
     def _on_run(self):
         """Command to run scrubber on target(s)"""
@@ -428,7 +432,7 @@ class MainPage(AppPage):
         sys.exit()
 
     def _on_target(self):
-
+        """Command to choose a target folder/file"""
         if self._vars['Batch Size'].get() == 'Folder':
             ch_folder_diag = tk.Tk()
             ch_folder_diag.title('Choose target folder...')
@@ -450,6 +454,11 @@ class MainPage(AppPage):
         else:
             self.status.set(f'Target file set to: \n{self.input_file}. '
                             f'\nChoose Run to continue...')
+
+    @staticmethod
+    def _on_quit():
+        """Command to exit program"""
+        sys.exit()
 
 
 class Application(tk.Tk):
