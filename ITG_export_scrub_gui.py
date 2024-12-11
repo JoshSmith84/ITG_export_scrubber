@@ -429,7 +429,7 @@ class MainPage(AppPage):
                             self._vars['Post Job'].get(),
                             self._vars['Zip?'].get(),
                         )
-        sys.exit()
+            sys.exit()
 
     def _on_target(self):
         """Command to choose a target folder/file"""
