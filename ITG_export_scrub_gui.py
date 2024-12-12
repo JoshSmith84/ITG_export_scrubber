@@ -26,8 +26,7 @@ from tkinter import filedialog
 import sys
 import logging
 import datetime
-import threading
-from threading import Thread
+
 
 # Logging config
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %'
@@ -283,6 +282,7 @@ class MainPage(AppPage):
                                           f'deleting old {wb_file}, '
                                           f' but permission denied.'
                                           f' Try running again as admin')
+                shutil.rmtree(export_dir)
                 return 1
         wb.save(wb_file)
 
@@ -415,7 +415,6 @@ class MainPage(AppPage):
             #         if i % 2 == 0:
             #             c.fill = l_blue_fill
             wb.save(wb_file)
-            return 0
 
         # Delete the starting "Blank" sheet and delete temp files
         wb = load_workbook(wb_file)
@@ -450,6 +449,7 @@ class MainPage(AppPage):
                                           f'as it has been zipped, '
                                           f' but permission denied.'
                                           f' Try running again as admin')
+        return 0
 
     def _on_run(self):
         """Command to run scrubber on target(s)"""
@@ -534,7 +534,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title("ITG Export Scrubber 1.0")
+        self.title("ITG Export Scrubber 1.1")
         self.minsize(400, 300)
         self.main_page()
 
