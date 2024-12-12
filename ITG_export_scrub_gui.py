@@ -129,6 +129,7 @@ class MainPage(AppPage):
         self.input_folder = ''
         self.input_file = ''
         self.err_present = 0
+        self.err_count = 0
 
         size_default = self._add_frame('Processing a folder or single file?')
         post_default = self._add_frame(
@@ -214,7 +215,8 @@ class MainPage(AppPage):
         explode_path.pop(-1)
         working_dir = '/'.join(explode_path) + '/'
         export_dir = working_dir + 'itg_unzipped/'
-        error_log = working_dir + f'{datetime.date.today()}_error_log.txt'
+        error_log = working_dir + (f'ITG_scrubber_errors_'
+                                   f'{datetime.date.today()}.txt')
 
         # Unzip input
         try:
@@ -476,7 +478,10 @@ class MainPage(AppPage):
                             self._vars['Post Job'].get(),
                             self._vars['Zip?'].get(),
                         )
-            if self.err_present == 0:
+                        if self.err_present == 1:
+                            self.err_count += 1
+
+            if self.err_count == 0 and self.err_present == 0:
                 self.status.set('Processing Complete. '
                                 'Add more targets to continue.')
             else:
@@ -534,7 +539,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title("ITG Export Scrubber 1.1")
+        self.title("ITG Export Scrubber 1.12")
         self.minsize(400, 300)
         self.main_page()
 
