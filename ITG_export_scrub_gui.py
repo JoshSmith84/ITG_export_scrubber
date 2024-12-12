@@ -12,10 +12,9 @@ and zip for sending. Also edit cell data to remove html, unicode issues,
 
 # imports
 import os
+from os.path import basename
 import shutil
 import csv
-import zipfile
-from os.path import basename
 import unicodedata
 from bs4 import BeautifulSoup
 from zipfile import ZipFile
@@ -26,6 +25,9 @@ from tkinter import ttk
 from tkinter import filedialog
 import sys
 import logging
+import datetime
+import threading
+from threading import Thread
 
 # Logging config
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %'
@@ -127,6 +129,7 @@ class MainPage(AppPage):
 
         self.input_folder = ''
         self.input_file = ''
+        self.err_present = 0
 
         size_default = self._add_frame('Processing a folder or single file?')
         post_default = self._add_frame(
@@ -173,7 +176,7 @@ class MainPage(AppPage):
             self, textvariable=self.status
         ).grid(sticky=(tk.W + tk.E), row=4, padx=10)
 
-    def process_exports(self, input_zip, post_task, zip_task) -> None:
+    def process_exports(self, input_zip, post_task, zip_task) -> int:
         """Main processing method. Take a TPG ITG export, unzip it,
         ignore unneeded data, clean left over csv's of empty columns,
         and make it readable
@@ -184,7 +187,9 @@ class MainPage(AppPage):
                         when processing is complete.
         :param zip_task: Option to either zip the output or not
                         when processing is complete.
-        :return: None
+        :return: Integer 0 or else. 0 means no error occurred.
+        Else means error log is present,
+        and status should be updated to reflect that.
         """
 
         keep_csv = [
@@ -210,10 +215,28 @@ class MainPage(AppPage):
         explode_path.pop(-1)
         working_dir = '/'.join(explode_path) + '/'
         export_dir = working_dir + 'itg_unzipped/'
+        error_log = working_dir + f'{datetime.date.today()}_error_log.txt'
 
         # Unzip input
-        with ZipFile(input_zip, 'r') as zip:
-            zip.extractall(export_dir)
+        try:
+            with ZipFile(input_zip, 'r') as in_zip:
+                in_zip.extractall(export_dir)
+        except FileNotFoundError:
+            self.log_error(error_log, f'{input_zip} not found.')
+            return 1
+        except PermissionError:
+            self.log_error(error_log, f'{input_zip} permission denied.'
+                                      f' Try Running again as admin')
+            return 1
+        except in_zip.BadZipFile:
+            self.log_error(error_log, f'{input_zip} may be corrupt.')
+            return 1
+        except OSError:
+            self.log_error(error_log, f'{input_zip} '
+                                      f'caused an OS error. '
+                                      f' Drive may be full or '
+                                      f'path is no longer valid.')
+            return 1
 
         # Gather list of files
         input_files = []
@@ -238,7 +261,7 @@ class MainPage(AppPage):
         if len(input_files) < 1:
             self.status.set(f'{input_zip} is not a valid ITG export')
             shutil.rmtree(export_dir)
-            return
+            return 1
         logging.debug(f'edited list: {input_files}\n')
 
         # From any of the csvs, pull customer name from column B
@@ -253,7 +276,14 @@ class MainPage(AppPage):
         wb = Workbook()
         wb_file = working_dir + f'{customer_name}_export.xlsx'
         if os.path.exists(wb_file):
-            os.remove(wb_file)
+            try:
+                os.remove(wb_file)
+            except PermissionError:
+                self.log_error(error_log, f'Attempted '
+                                          f'deleting old {wb_file}, '
+                                          f' but permission denied.'
+                                          f' Try running again as admin')
+                return 1
         wb.save(wb_file)
 
         # (function; inner loop)
@@ -385,6 +415,7 @@ class MainPage(AppPage):
             #         if i % 2 == 0:
             #             c.fill = l_blue_fill
             wb.save(wb_file)
+            return 0
 
         # Delete the starting "Blank" sheet and delete temp files
         wb = load_workbook(wb_file)
@@ -394,17 +425,31 @@ class MainPage(AppPage):
 
         # Delete or keep unzipped export
         if post_task == 'Delete':
-            os.remove(input_zip)
+            try:
+                os.remove(input_zip)
+            except PermissionError:
+                self.log_error(error_log, f'Attempted '
+                                          f'deleting {input_zip}, '
+                                          f' but permission denied.'
+                                          f' Try running again as admin')
+                return 1
 
         self.status.set(f'Processing of {customer_name} complete.')
 
         # To zip or not to zip output file (needs to be zipped for email)
         if zip_task == 'Yes':
-            with zipfile.ZipFile(
+            with ZipFile(
                     f'{working_dir}/'
                     f'{customer_name}_export.zip', 'w') as f:
                 f.write(wb_file, basename(wb_file))
-            os.remove(wb_file)
+            try:
+                os.remove(wb_file)
+            except PermissionError:
+                self.log_error(error_log, f'Attempted '
+                                          f'deleting {wb_file} '
+                                          f'as it has been zipped, '
+                                          f' but permission denied.'
+                                          f' Try running again as admin')
 
     def _on_run(self):
         """Command to run scrubber on target(s)"""
@@ -416,20 +461,29 @@ class MainPage(AppPage):
                 self.status.set('No target chosen. \n'
                                 'Please choose a target zip file...')
         else:
+            self.status.set('Processing...')
+            Application.update_idletasks(self)
             if self.input_folder == '':
-                self.process_exports(self.input_file,
+                self.err_present = self.process_exports(self.input_file,
                                      self._vars['Post Job'].get(),
                                      self._vars['Zip?'].get(),
                                      )
             else:
                 for file in os.listdir(self.input_folder):
                     if '.zip' in file:
-                        self.process_exports(
+                        self.err_present = self.process_exports(
                             self.input_folder + '/' + file,
                             self._vars['Post Job'].get(),
                             self._vars['Zip?'].get(),
                         )
-            sys.exit()
+            if self.err_present == 0:
+                self.status.set('Processing Complete. '
+                                'Add more targets to continue.')
+            else:
+                self.status.set('Processing Complete, but errors are present.'
+                                '\nPlease refer to the error file which will '
+                                'be contained in the folder where the '
+                                'target file(s) resided.')
 
     def _on_target(self):
         """Command to choose a target folder/file"""
@@ -454,6 +508,19 @@ class MainPage(AppPage):
         else:
             self.status.set(f'Target file set to: \n{self.input_file}. '
                             f'\nChoose Run to continue...')
+
+    @staticmethod
+    def log_error(err_file, message) -> None:
+        """Simple method for opening passed txt file
+        and appending message
+
+        :param err_file: txt file
+        :param message: string to append.
+        This method will prepend current date and time
+        """
+
+        with open(err_file, 'a') as f:
+            f.write(f'Error_{datetime.datetime.now()}_{message}\n')
 
     @staticmethod
     def _on_quit():
