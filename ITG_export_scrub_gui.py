@@ -187,8 +187,8 @@ class MainPage(AppPage):
                         when processing is complete.
         :param zip_task: Option to either zip the output or not
                         when processing is complete.
-        :return: Integer 0 or else. 0 means no error occurred.
-        Else means error log is present,
+        :return: Integer 0 or 1. 0 means no error occurred.
+        1 means error log is present,
         and status should be updated to reflect that.
         """
 
