@@ -262,7 +262,7 @@ class MainPage(AppPage):
         if len(input_files) < 1:
             self.status.set(f'{input_zip} is not a valid ITG export')
             shutil.rmtree(export_dir)
-            return 1
+            return 0
         logging.debug(f'edited list: {input_files}\n')
 
         # From any of the csvs, pull customer name from column B
