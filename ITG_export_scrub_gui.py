@@ -19,13 +19,14 @@ import unicodedata
 from bs4 import BeautifulSoup
 from zipfile import ZipFile
 from openpyxl import Workbook, load_workbook
-from openpyxl.styles import Font, PatternFill
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 import sys
 import logging
 import datetime
+import pandas as pd
+import xlsxwriter
 
 
 # Logging config
@@ -49,7 +50,8 @@ class LabelInput(tk.Frame):
         super().__init__(parent, **kwargs)
         input_args = input_args or {}
         label_args = label_args or {}
-        # The above statements say if label_args or input_args are not None,
+        # The above statements say if label_args
+        # or input_args are not None,
         # they are what was passed during init.
         # However, if they are None, then make them empty dicts
         self.variable = var
@@ -75,7 +77,8 @@ class LabelInput(tk.Frame):
                     self.input, value=v, text=v, **input_args
                 )
                 button.pack(
-                    side=tk.LEFT, ipadx=10, ipady=2, expand=True, fill='x'
+                    side=tk.LEFT, ipadx=10,
+                    ipady=2, expand=True, fill='x'
                 )
         else:
             self.input = input_class(self, **input_args)
@@ -131,7 +134,9 @@ class MainPage(AppPage):
         self.err_present = 0
         self.err_count = 0
 
-        size_default = self._add_frame('Processing a folder or single file?')
+        size_default = self._add_frame(
+            'Processing a folder or single file?'
+        )
         post_default = self._add_frame(
             'Delete or Keep original export when finished?'
         )
@@ -141,17 +146,20 @@ class MainPage(AppPage):
         LabelInput(size_default, '', input_class=ttk.Radiobutton,
                    var=self._vars['Batch Size'],
                    input_args={'values': ['Folder', 'Single File']}
-                   ).grid(row=0, column=0, sticky=(tk.W + tk.E))
+                   ).grid(row=0, column=0, sticky=(tk.W + tk.E)
+                          )
 
         LabelInput(post_default, '', input_class=ttk.Radiobutton,
                    var=self._vars['Post Job'],
                    input_args={'values': ['Delete', 'Keep']}
-                   ).grid(row=1, column=0, sticky=(tk.W + tk.E))
+                   ).grid(row=1, column=0, sticky=(tk.W + tk.E)
+                          )
 
         LabelInput(zip_default, '', input_class=ttk.Radiobutton,
                    var=self._vars['Zip?'],
                    input_args={'values': ['Yes', 'No']}
-                   ).grid(row=2, column=0, sticky=(tk.W + tk.E))
+                   ).grid(row=2, column=0, sticky=(tk.W + tk.E)
+                          )
 
         self.run_button = tk.Button(buttons, text='Run',
                                     command=self._on_run
@@ -171,7 +179,9 @@ class MainPage(AppPage):
         self.quit_button.grid(row=3, column=0, sticky='ew')
 
         self.status = tk.StringVar(
-            None, 'Status: Please select a target to continue...')
+            None, 'Status: '
+                  'Please select a target to continue...'
+        )
         ttk.Label(
             self, textvariable=self.status
         ).grid(sticky=(tk.W + tk.E), row=4, padx=10)
@@ -188,28 +198,22 @@ class MainPage(AppPage):
         :param zip_task: Option to either zip the output or not
                         when processing is complete.
         :return: Integer 0 or 1. 0 means no error occurred.
-        1 means error log is present,
-        and status should be updated to reflect that.
+        1 means error log is present.
         """
 
         keep_csv = [
-            'applications-licensing.csv', 'backup.csv', 'backups-managed.csv',
+            'applications-licensing.csv', 'backup.csv',
+            'backups-managed.csv',
             'battery-backup-ups.csv', 'configurations.csv',
             'domain-hosting.csv',
-            'email.csv', 'file-sharing.csv', 'internet-wan.csv', 'lan.csv',
-            'passwords.csv', 'printing.csv', 'vendors.csv',
-            'voice-pbx-fax.csv', 'wireless.csv',
+            'email.csv', 'file-sharing.csv', 'internet-wan.csv',
+            'lan.csv', 'passwords.csv', 'printing.csv',
+            'vendors.csv', 'voice-pbx-fax.csv', 'wireless.csv',
         ]
-        html_detection = ['<div>', '<br>', '<p>', '<tr>', '<tbody>', '<td>',
-                          '<ol>', '<li>' '<a>', '<ul>',
+        html_detection = ['<div>', '<br>', '<p>', '<tr>',
+                          '<tbody>', '<td>', '<ol>', '<li>',
+                          '<a>', '<ul>',
                           ]
-        header_blue = '3498DB'
-        light_blue = 'D6EAF8'
-        h_blue_fill = PatternFill(
-            start_color=header_blue, end_color=header_blue, fill_type='solid')
-        l_blue_fill = PatternFill(
-            start_color=light_blue, end_color=light_blue, fill_type='solid')
-        font_header = Font(size=12)
 
         explode_path = input_zip.split('/')
         explode_path.pop(-1)
@@ -218,19 +222,27 @@ class MainPage(AppPage):
         error_log = working_dir + (f'ITG_scrubber_errors_'
                                    f'{datetime.date.today()}.txt')
 
+        # Dictionary to contain all customer sheets:dataframe
+        sheets_dict = {}
+
         # Unzip input
         try:
             with ZipFile(input_zip, 'r') as in_zip:
                 in_zip.extractall(export_dir)
         except FileNotFoundError:
-            self.log_error(error_log, f'{input_zip} not found.')
+            self.log_error(error_log, f'{input_zip} not found.'
+                           )
             return 1
         except PermissionError:
-            self.log_error(error_log, f'{input_zip} permission denied.'
-                                      f' Try Running again as admin')
+            self.log_error(error_log, f'{input_zip} '
+                                      f'permission denied.'
+                                      f' Try Running again as admin'
+                           )
             return 1
         except in_zip.BadZipFile:
-            self.log_error(error_log, f'{input_zip} may be corrupt.')
+            self.log_error(error_log, f'{input_zip}'
+                                      f' may be corrupt.'
+                           )
             return 1
         except OSError:
             self.log_error(error_log, f'{input_zip} '
@@ -240,9 +252,7 @@ class MainPage(AppPage):
             return 1
 
         # Gather list of files
-        input_files = []
-        for file in os.listdir(export_dir):
-            input_files.append(file)
+        input_files = [f for f in os.listdir(export_dir)]
 
         # Detect if backups-managed is present
         delete_backup_csv = 0
@@ -262,7 +272,7 @@ class MainPage(AppPage):
         if len(input_files) < 1:
             self.status.set(f'{input_zip} is not a valid ITG export')
             shutil.rmtree(export_dir)
-            return 1
+            return 0
         logging.debug(f'edited list: {input_files}\n')
 
         # From any of the csvs, pull customer name from column B
@@ -283,26 +293,33 @@ class MainPage(AppPage):
                 self.log_error(error_log, f'Attempted '
                                           f'deleting old {wb_file}, '
                                           f' but permission denied.'
-                                          f' Try running again as admin')
+                                          f' Try running again as admin'
+                               )
                 shutil.rmtree(export_dir)
                 return 1
         wb.save(wb_file)
 
         # (function; inner loop)
-        # Iterate through every remaining csv, and make changes in memory
+        # Iterate through every remaining csv,
+        # and make changes in memory
         for file in input_files:
             # Reset columns to delete list
             # (columns that always are deleted/ignored)
             delete_columns = ['id', 'organization', 'Category',
-                              'Business Impact', 'Client Subject Matter Expert',
+                              'Business Impact',
+                              'Client Subject Matter Expert',
                               'Importance', 'archived',
                               'Backup Estimated Start Date',
-                              'FlexAssset Review Date', 'FlexAsset Review Date',
-                              'Backup Radar Reporting Schedule', 'hostname',
-                              'manufacturer', 'position', 'contact', 'location',
-                              'configuration_interfaces', 'DHCP Exclusions',
-                              'one_time_password', 'Printer Management Login',
-                              'installed_by', 'Equipment make & Model',
+                              'FlexAssset Review Date',
+                              'FlexAsset Review Date',
+                              'Backup Radar Reporting Schedule',
+                              'hostname', 'manufacturer',
+                              'position', 'contact', 'location',
+                              'configuration_interfaces',
+                              'DHCP Exclusions', 'one_time_password',
+                              'Printer Management Login',
+                              'installed_by',
+                              'Equipment make & Model',
                               'Printer Name',
                               ]
 
@@ -316,8 +333,10 @@ class MainPage(AppPage):
                     for cell in row:
                         for i in html_detection:
                             if i in cell:
-                                cell = BeautifulSoup(cell, 'lxml').text
-                        cell = unicodedata.normalize('NFKD', cell)
+                                cell = BeautifulSoup(
+                                    cell, 'lxml').text
+                        cell = unicodedata.normalize(
+                            'NFKD', cell)
                         new_row.append(cell)
                     working_rows.append(new_row)
 
@@ -332,7 +351,8 @@ class MainPage(AppPage):
                 if file == 'configurations.csv':
                     if value == 'configuration_status':
                         configuration_status_index = index
-            logging.debug(f'File: {file}. Archive index #: {archive_index}\n')
+            logging.debug(f'File: {file}. Archive index #: '
+                          f'{archive_index}\n')
 
             # go through every row and delete any row with archive set to 'Yes'
             # and any configuration status in configurations csv
@@ -359,33 +379,46 @@ class MainPage(AppPage):
                     delete_columns.append(headers[i])
             logging.debug(f'Columns to delete: {delete_columns}\n')
 
-            # Ignore all blank columns
+            # Ignore all blank columns and columns to be "deleted"
             clean_rows = []
             for row in working_rows:
                 new_row = []
                 for i in range(len(row)):
                     if headers[i] not in delete_columns:
                         new_row.append(row[i])
-
                 clean_rows.append(new_row)
 
             # Clean up headers to match
-            new_headers = []
-            for header in headers:
-                if header not in delete_columns:
-                    new_headers.append(header)
+            new_headers = [h for h in headers if h not in delete_columns]
 
-            # Open customer workbook and add new sheet
-            wb = load_workbook(wb_file)
-            sheet_name = file.split('.')[0]
-            sheet = wb.create_sheet(sheet_name)
-
-            # Output clean headers and data to Sheet
-            sheet.append(new_headers)
+            # Convert the lists of lists to pandas DataFrame
+            columns_dict = {}
             for row in clean_rows:
-                sheet.append(row)
+                for i, value in enumerate(row):
+                    columns_dict.setdefault(new_headers[i], []).append(value)
+            df = pd.DataFrame(columns_dict)
 
-            # Find and set uniform column width
+            # Populate the Pandas dataframe into a dictionary to
+            # populate the workbook after all data is processed
+            sheets_dict.update({file.split('.')[0]: df})
+
+        # Populate Workbook with all sheets/tables and data
+        wb = xlsxwriter.Workbook(wb_file)
+        for key, value in sheets_dict.items():
+            sheet = wb.add_worksheet(key)
+            sheet.add_table(0, 0, value.shape[0], value.shape[1] - 1, {
+                'data': value.values.tolist(),
+                'columns': [{'header': col} for col in value.columns]
+            })
+        wb.close()
+
+        # Delete the unzipped original export
+        shutil.rmtree(export_dir)
+
+        # Open workbook again with openpxl and make final adjustments
+        # Find and set uniform column width
+        wb = load_workbook(wb_file)
+        for sheet in wb.worksheets:
             for col in sheet.columns:
                 max_length = 0
                 column = col[0].column_letter
@@ -400,29 +433,7 @@ class MainPage(AppPage):
                 adjusted_width = (max_length + 2) * 1.2
                 sheet.column_dimensions[column].width = adjusted_width
 
-            # Further sheet formatting
-            for cell in sheet['1:1']:
-                cell.font = font_header
-                # cell.fill = h_blue_fill
-            sheet.freeze_panes = 'A2'
-            row_count = sheet.max_row
-            column_count = sheet.max_column
-
-            # Commenting out for now, this solution is ugly once
-            # data is sorted after the fact
-
-            # for x in range(1, column_count + 1):
-            #     for i in range(1, row_count + 1):
-            #         c = sheet.cell(row=i, column=x)
-            #         if i % 2 == 0:
-            #             c.fill = l_blue_fill
-            wb.save(wb_file)
-
-        # Delete the starting "Blank" sheet and delete temp files
-        wb = load_workbook(wb_file)
-        del wb['Sheet']
         wb.save(wb_file)
-        shutil.rmtree(export_dir)
 
         # Delete or keep unzipped export
         if post_task == 'Delete':
@@ -432,7 +443,8 @@ class MainPage(AppPage):
                 self.log_error(error_log, f'Attempted '
                                           f'deleting {input_zip}, '
                                           f' but permission denied.'
-                                          f' Try running again as admin')
+                                          f' Try running again as admin'
+                               )
                 return 1
 
         self.status.set(f'Processing of {customer_name} complete.')
@@ -450,7 +462,8 @@ class MainPage(AppPage):
                                           f'deleting {wb_file} '
                                           f'as it has been zipped, '
                                           f' but permission denied.'
-                                          f' Try running again as admin')
+                                          f' Try running again as admin'
+                               )
         return 0
 
     def _on_run(self):
@@ -485,9 +498,10 @@ class MainPage(AppPage):
                 self.status.set('Processing Complete. '
                                 'Add more targets to continue.')
             else:
-                self.status.set('Processing Complete, but errors are present.'
+                self.status.set('Processing Complete, '
+                                'but errors are present.'
                                 '\nPlease refer to the error file which will '
-                                'be contained in the folder where the '
+                                'be contained in the directory where the '
                                 'target file(s) resided.')
 
     def _on_target(self):
@@ -508,11 +522,14 @@ class MainPage(AppPage):
             self.input_folder = ''
 
         if self.input_folder != '':
-            self.status.set(f'Target folder set to: \n{self.input_folder}. '
-                            f'\nChoose Run to continue...')
+            self.status.set(
+                f'Target folder set to: \n{self.input_folder}. '
+                f'\nChoose Run to continue...'
+                            )
         else:
             self.status.set(f'Target file set to: \n{self.input_file}. '
-                            f'\nChoose Run to continue...')
+                            f'\nChoose Run to continue...'
+                            )
 
     @staticmethod
     def log_error(err_file, message) -> None:
@@ -539,7 +556,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title("ITG Export Scrubber 1.12")
+        self.title("ITG Export Scrubber 1.5")
         self.minsize(400, 300)
         self.main_page()
 
