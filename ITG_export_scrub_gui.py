@@ -183,7 +183,7 @@ class MainPage(AppPage):
                   'Please select a target to continue...'
         )
         ttk.Label(
-            self, textvariable=self.status
+            self, textvariable=self.status, wraplength=225, justify='left'
         ).grid(sticky=(tk.W + tk.E), row=4, padx=10)
 
     def process_exports(self, input_zip, post_task, zip_task) -> int:
@@ -303,6 +303,9 @@ class MainPage(AppPage):
         # Iterate through every remaining csv,
         # and make changes in memory
         for file in input_files:
+            self.status.set(f'Processing {customer_name}:\n'
+                            f'{file} ...')
+            Application.update(self)
             # Reset columns to delete list
             # (columns that always are deleted/ignored)
             delete_columns = ['id', 'organization', 'Category',
@@ -476,15 +479,17 @@ class MainPage(AppPage):
                 self.status.set('No target chosen. \n'
                                 'Please choose a target zip file...')
         else:
-            self.status.set('Processing...')
-            Application.update_idletasks(self)
             if self.input_folder == '':
+                self.status.set(f'Processing {self.input_file} ...')
+                Application.update(self)
                 self.err_present = self.process_exports(self.input_file,
                                      self._vars['Post Job'].get(),
                                      self._vars['Zip?'].get(),
                                      )
             else:
                 for file in os.listdir(self.input_folder):
+                    self.status.set(f'Processing {file} ...')
+                    Application.update(self)
                     if '.zip' in file:
                         self.err_present = self.process_exports(
                             self.input_folder + '/' + file,
@@ -556,8 +561,8 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title("ITG Export Scrubber 1.5")
-        self.minsize(400, 300)
+        self.title("ITG Export Scrubber v1.51")
+        self.minsize(400, 350)
         self.main_page()
 
     def main_page(self):
