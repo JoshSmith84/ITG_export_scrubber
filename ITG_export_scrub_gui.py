@@ -19,13 +19,14 @@ import unicodedata
 from bs4 import BeautifulSoup
 from zipfile import ZipFile
 from openpyxl import Workbook, load_workbook
-from openpyxl.styles import Font, PatternFill
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 import sys
 import logging
 import datetime
+import pandas as pd
+import xlsxwriter
 
 
 # Logging config
@@ -213,17 +214,6 @@ class MainPage(AppPage):
                           '<tbody>', '<td>', '<ol>', '<li>',
                           '<a>', '<ul>',
                           ]
-        header_blue = '3498DB'
-        light_blue = 'D6EAF8'
-        h_blue_fill = PatternFill(
-            start_color=header_blue,
-            end_color=header_blue, fill_type='solid'
-        )
-        l_blue_fill = PatternFill(
-            start_color=light_blue,
-            end_color=light_blue, fill_type='solid'
-        )
-        font_header = Font(size=12)
 
         explode_path = input_zip.split('/')
         explode_path.pop(-1)
@@ -231,6 +221,9 @@ class MainPage(AppPage):
         export_dir = working_dir + 'itg_unzipped/'
         error_log = working_dir + (f'ITG_scrubber_errors_'
                                    f'{datetime.date.today()}.txt')
+
+        # Dictionary to contain all customer sheets:dataframe
+        sheets_dict = {}
 
         # Unzip input
         try:
@@ -398,17 +391,34 @@ class MainPage(AppPage):
             # Clean up headers to match
             new_headers = [h for h in headers if h not in delete_columns]
 
-            # Open customer workbook and add new sheet
-            wb = load_workbook(wb_file)
-            sheet_name = file.split('.')[0]
-            sheet = wb.create_sheet(sheet_name)
-
-            # Output clean headers and data to Sheet
-            sheet.append(new_headers)
+            # Convert the lists of lists to pandas DataFrame
+            columns_dict = {}
             for row in clean_rows:
-                sheet.append(row)
+                for i, value in enumerate(row):
+                    columns_dict.setdefault(new_headers[i], []).append(value)
+            df = pd.DataFrame(columns_dict)
 
-            # Find and set uniform column width
+            # Populate the Pandas dataframe into a dictionary to
+            # populate the workbook after all data is processed
+            sheets_dict.update({file.split('.')[0]: df})
+
+        # Populate Workbook with all sheets/tables and data
+        wb = xlsxwriter.Workbook(wb_file)
+        for key, value in sheets_dict.items():
+            sheet = wb.add_worksheet(key)
+            sheet.add_table(0, 0, value.shape[0], value.shape[1] - 1, {
+                'data': value.values.tolist(),
+                'columns': [{'header': col} for col in value.columns]
+            })
+        wb.close()
+
+        # Delete the unzipped original export
+        shutil.rmtree(export_dir)
+
+        # Open workbook again with openpxl and make final adjustments
+        # Find and set uniform column width
+        wb = load_workbook(wb_file)
+        for sheet in wb.worksheets:
             for col in sheet.columns:
                 max_length = 0
                 column = col[0].column_letter
@@ -423,29 +433,7 @@ class MainPage(AppPage):
                 adjusted_width = (max_length + 2) * 1.2
                 sheet.column_dimensions[column].width = adjusted_width
 
-            # Further sheet formatting
-            for cell in sheet['1:1']:
-                cell.font = font_header
-                # cell.fill = h_blue_fill
-            sheet.freeze_panes = 'A2'
-            row_count = sheet.max_row
-            column_count = sheet.max_column
-
-            # Commenting out for now, this solution is ugly once
-            # data is sorted after the fact
-
-            # for x in range(1, column_count + 1):
-            #     for i in range(1, row_count + 1):
-            #         c = sheet.cell(row=i, column=x)
-            #         if i % 2 == 0:
-            #             c.fill = l_blue_fill
-            wb.save(wb_file)
-
-        # Delete the starting "Blank" sheet and delete temp files
-        wb = load_workbook(wb_file)
-        del wb['Sheet']
         wb.save(wb_file)
-        shutil.rmtree(export_dir)
 
         # Delete or keep unzipped export
         if post_task == 'Delete':
@@ -568,7 +556,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title("ITG Export Scrubber 1.12")
+        self.title("ITG Export Scrubber 1.5")
         self.minsize(400, 300)
         self.main_page()
 
