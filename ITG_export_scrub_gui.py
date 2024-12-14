@@ -271,6 +271,7 @@ class MainPage(AppPage):
                 continue
         if len(input_files) < 1:
             self.status.set(f'{input_zip} is not a valid ITG export')
+            Application.update(self)
             shutil.rmtree(export_dir)
             return 0
         logging.debug(f'edited list: {input_files}\n')
@@ -303,8 +304,7 @@ class MainPage(AppPage):
         # Iterate through every remaining csv,
         # and make changes in memory
         for file in input_files:
-            self.status.set(f'Processing {customer_name}:\n'
-                            f'{file} ...')
+            self.status.set(f'Processing {customer_name} ...')
             Application.update(self)
             # Reset columns to delete list
             # (columns that always are deleted/ignored)
@@ -451,6 +451,7 @@ class MainPage(AppPage):
                 return 1
 
         self.status.set(f'Processing of {customer_name} complete.')
+        Application.update(self)
 
         # To zip or not to zip output file (needs to be zipped for email)
         if zip_task == 'Yes':

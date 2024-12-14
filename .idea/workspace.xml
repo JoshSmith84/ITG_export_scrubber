@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="Version 1.51. Fixed issue where long jobs would cause the main window to report &quot;Not responding&quot; by adding update tasks and corresponding status updates to bottom of GUI window">
-      <change afterPath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.51.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ITG_export_scrub_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ITG_export_scrub_gui.py" afterDir="false" />
     </list>
@@ -212,7 +211,7 @@
       <updated>1733592207961</updated>
       <workItem from="1733592209354" duration="40430000" />
       <workItem from="1733926431163" duration="55789000" />
-      <workItem from="1734212024099" duration="3802000" />
+      <workItem from="1734212024099" duration="4953000" />
     </task>
     <task id="LOCAL-00001" summary="*">
       <option name="closed" value="true" />
@@ -382,7 +381,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734205207137</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Version 1.51. Fixed issue where long jobs would cause the main window to report &quot;Not responding&quot; by adding update tasks and corresponding status updates to bottom of GUI window">
+      <option name="closed" value="true" />
+      <created>1734216973198</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1734216973198</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -438,7 +445,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrubber.coverage" NAME="ITG_export_scrubber Coverage Results" MODIFIED="1733788502062" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734216125532" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734218102533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$pandas_table_test.coverage" NAME="pandas table test Coverage Results" MODIFIED="1734198969534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Test files" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_scrub_with_pandas_test.coverage" NAME="ITG scrub with pandas test Coverage Results" MODIFIED="1734196325151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Test files" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$html_table_test.coverage" NAME="html table test Coverage Results" MODIFIED="1734096311733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
