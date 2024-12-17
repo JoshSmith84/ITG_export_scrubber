@@ -126,7 +126,7 @@ class MainPage(AppPage):
         super().__init__(*args, **kwargs)
         self._vars = {'Batch Size': tk.StringVar(None, 'Folder'),
                       'Post Job': tk.StringVar(None, 'Delete'),
-                      'Zip?': tk.StringVar(None, 'Yes'),
+                      'Zip?': tk.StringVar(None, 'No'),
                     }
 
         self.input_folder = ''
@@ -214,11 +214,17 @@ class MainPage(AppPage):
                           '<tbody>', '<td>', '<ol>', '<li>',
                           '<a>', '<ul>',
                           ]
+        sorters = ['Name', 'name', 'Hostname', 'Printer Name',
+                   'Description', 'Vendor Name']
 
         explode_path = input_zip.split('/')
+        for i in explode_path:
+            if i == '/':
+                i = '\\'
+        input_zip = '\\'.join(explode_path)
         explode_path.pop(-1)
-        working_dir = '/'.join(explode_path) + '/'
-        export_dir = working_dir + 'itg_unzipped/'
+        working_dir = '\\'.join(explode_path) + '\\'
+        export_dir = working_dir + 'itg_unzipped\\'
         error_log = working_dir + (f'ITG_scrubber_errors_'
                                    f'{datetime.date.today()}.txt')
 
@@ -300,7 +306,6 @@ class MainPage(AppPage):
                 return 1
         wb.save(wb_file)
 
-        # (function; inner loop)
         # Iterate through every remaining csv,
         # and make changes in memory
         for file in input_files:
@@ -323,7 +328,7 @@ class MainPage(AppPage):
                               'Printer Management Login',
                               'installed_by',
                               'Equipment make & Model',
-                              'Printer Name',
+                              'resource_type', 'resource_id',
                               ]
 
             # Continue with unpacking current csv to list of lists
@@ -400,10 +405,15 @@ class MainPage(AppPage):
                 for i, value in enumerate(row):
                     columns_dict.setdefault(new_headers[i], []).append(value)
             df = pd.DataFrame(columns_dict)
-
+            # Sort any sheets if name column is present and
             # Populate the Pandas dataframe into a dictionary to
             # populate the workbook after all data is processed
-            sheets_dict.update({file.split('.')[0]: df})
+            if new_headers[0] in sorters:
+                sheets_dict.update({file.split('.')[0]: df.sort_values(
+                    by=new_headers[0])}
+                )
+            else:
+                sheets_dict.update({file.split('.')[0]: df})
 
         # Populate Workbook with all sheets/tables and data
         wb = xlsxwriter.Workbook(wb_file)
@@ -481,7 +491,8 @@ class MainPage(AppPage):
                                 'Please choose a target zip file...')
         else:
             if self.input_folder == '':
-                self.status.set(f'Processing {self.input_file} ...')
+                self.status.set(
+                    f'Processing {self.input_file} ...')
                 Application.update(self)
                 self.err_present = self.process_exports(self.input_file,
                                      self._vars['Post Job'].get(),
@@ -562,7 +573,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title("ITG Export Scrubber v1.51")
+        self.title(" TPG ITG Export Scrubber v1.54")
         self.minsize(400, 350)
         self.main_page()
 

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="Version 1.51. Fixed issue where long jobs would cause the main window to report &quot;Not responding&quot; by adding update tasks and corresponding status updates to bottom of GUI window">
+    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="Missed setting app update after some status were set">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ITG_export_scrub_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ITG_export_scrub_gui.py" afterDir="false" />
     </list>
@@ -211,7 +211,10 @@
       <updated>1733592207961</updated>
       <workItem from="1733592209354" duration="40430000" />
       <workItem from="1733926431163" duration="55789000" />
-      <workItem from="1734212024099" duration="4953000" />
+      <workItem from="1734212024099" duration="5614000" />
+      <workItem from="1734281685691" duration="18000" />
+      <workItem from="1734444461769" duration="14000" />
+      <workItem from="1734444673763" duration="3820000" />
     </task>
     <task id="LOCAL-00001" summary="*">
       <option name="closed" value="true" />
@@ -389,7 +392,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734216973198</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Missed setting app update after some status were set">
+      <option name="closed" value="true" />
+      <created>1734218620057</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1734218620057</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -425,7 +436,8 @@
     <MESSAGE value="Converted some for loops to list comprehensions for cleaner code." />
     <MESSAGE value="Version 1.5. Converted to Pandas Dataframes and xlsxwriter for main data. This also required storing all sheet data for writing at once per function call instead of each csv loop. This allows for proper &quot;format as a table&quot; functionality." />
     <MESSAGE value="Version 1.51. Fixed issue where long jobs would cause the main window to report &quot;Not responding&quot; by adding update tasks and corresponding status updates to bottom of GUI window" />
-    <option name="LAST_COMMIT_MESSAGE" value="Version 1.51. Fixed issue where long jobs would cause the main window to report &quot;Not responding&quot; by adding update tasks and corresponding status updates to bottom of GUI window" />
+    <MESSAGE value="Missed setting app update after some status were set" />
+    <option name="LAST_COMMIT_MESSAGE" value="Missed setting app update after some status were set" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -445,8 +457,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrubber.coverage" NAME="ITG_export_scrubber Coverage Results" MODIFIED="1733788502062" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734218102533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734218216520" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$pandas_table_test.coverage" NAME="pandas table test Coverage Results" MODIFIED="1734198969534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Test files" />
+    <SUITE FILE_PATH="coverage/ITG_export_scrub_gui_py$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734447380394" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_scrub_with_pandas_test.coverage" NAME="ITG scrub with pandas test Coverage Results" MODIFIED="1734196325151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Test files" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$html_table_test.coverage" NAME="html table test Coverage Results" MODIFIED="1734096311733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
