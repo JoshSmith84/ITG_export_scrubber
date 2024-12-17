@@ -215,15 +215,22 @@ class MainPage(AppPage):
                           '<a>', '<ul>',
                           ]
         sorters = ['Name', 'name', 'Hostname', 'Printer Name',
-                   'Description', 'Vendor Name']
+                   'Description', 'Vendor Name'
+                   ]
 
+        # Replace slashes with correct Windows
+        # (as part of win11 issue troubleshooting)
         explode_path = input_zip.split('/')
-        for i in explode_path:
-            if i == '/':
-                i = '\\'
-        input_zip = '\\'.join(explode_path)
-        explode_path.pop(-1)
-        working_dir = '\\'.join(explode_path) + '\\'
+        new_explode_path = [i.replace('/', '\\') for i in explode_path]
+        input_zip = '\\'.join(new_explode_path)
+
+        # Check is zip path and absoluter path match, if not, change to abs path
+        if input_zip != os.path.abspath(input_zip):
+            input_zip = os.path.abspath(input_zip)
+
+        # Prep the rest of the processing paths
+        new_explode_path.pop(-1)
+        working_dir = '\\'.join(new_explode_path) + '\\'
         export_dir = working_dir + 'itg_unzipped\\'
         error_log = working_dir + (f'ITG_scrubber_errors_'
                                    f'{datetime.date.today()}.txt')

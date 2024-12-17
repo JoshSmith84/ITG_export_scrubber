@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="Missed setting app update after some status were set">
+    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.54: Changed the way directory strings are kept during processing, added sorting to main processing method based on certain column names, and added back 'Printer Name', and ignoring 'resource_type' and 'resource_id'">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ITG_export_scrub_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ITG_export_scrub_gui.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +213,7 @@
       <workItem from="1734212024099" duration="5614000" />
       <workItem from="1734281685691" duration="18000" />
       <workItem from="1734444461769" duration="14000" />
-      <workItem from="1734444673763" duration="3820000" />
+      <workItem from="1734444673763" duration="5092000" />
     </task>
     <task id="LOCAL-00001" summary="*">
       <option name="closed" value="true" />
@@ -400,7 +399,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734218620057</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="v1.54: Changed the way directory strings are kept during processing, added sorting to main processing method based on certain column names, and added back 'Printer Name', and ignoring 'resource_type' and 'resource_id'">
+      <option name="closed" value="true" />
+      <created>1734448590068</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1734448590068</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -437,7 +444,8 @@
     <MESSAGE value="Version 1.5. Converted to Pandas Dataframes and xlsxwriter for main data. This also required storing all sheet data for writing at once per function call instead of each csv loop. This allows for proper &quot;format as a table&quot; functionality." />
     <MESSAGE value="Version 1.51. Fixed issue where long jobs would cause the main window to report &quot;Not responding&quot; by adding update tasks and corresponding status updates to bottom of GUI window" />
     <MESSAGE value="Missed setting app update after some status were set" />
-    <option name="LAST_COMMIT_MESSAGE" value="Missed setting app update after some status were set" />
+    <MESSAGE value="v1.54: Changed the way directory strings are kept during processing, added sorting to main processing method based on certain column names, and added back 'Printer Name', and ignoring 'resource_type' and 'resource_id'" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.54: Changed the way directory strings are kept during processing, added sorting to main processing method based on certain column names, and added back 'Printer Name', and ignoring 'resource_type' and 'resource_id'" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
