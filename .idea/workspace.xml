@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.55: Added traceback info to all errors for better debugging">
+    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.56: Switched from using zipfile module to zipfile36 to solve long file path issues">
+      <change afterPath="$PROJECT_DIR$/enable_long_pathnames.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.56.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ITG_export_scrub_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ITG_export_scrub_gui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/TPG ITG Export Scrubber 1.12.exe" beforeDir="false" />
@@ -220,7 +222,7 @@
       <workItem from="1734281685691" duration="18000" />
       <workItem from="1734444461769" duration="14000" />
       <workItem from="1734444673763" duration="15512000" />
-      <workItem from="1734532506701" duration="3077000" />
+      <workItem from="1734532506701" duration="4150000" />
     </task>
     <task id="LOCAL-00001" summary="*">
       <option name="closed" value="true" />
@@ -438,7 +440,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734538165874</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="v1.56: Switched from using zipfile module to zipfile36 to solve long file path issues">
+      <option name="closed" value="true" />
+      <created>1734544556748</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1734544556748</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -478,7 +488,8 @@
     <MESSAGE value="v1.54: Changed the way directory strings are kept during processing, added sorting to main processing method based on certain column names, and added back 'Printer Name', and ignoring 'resource_type' and 'resource_id'" />
     <MESSAGE value="v1.54: Changed the way directory strings are kept during processing, added sorting to main processing method based on certain column names, and added back 'Printer Name', and ignoring 'resource_type' and 'resource_id'. Also, added an absolute path check before opening input zip" />
     <MESSAGE value="v1.55: Added traceback info to all errors for better debugging" />
-    <option name="LAST_COMMIT_MESSAGE" value="v1.55: Added traceback info to all errors for better debugging" />
+    <MESSAGE value="v1.56: Switched from using zipfile module to zipfile36 to solve long file path issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.56: Switched from using zipfile module to zipfile36 to solve long file path issues" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
