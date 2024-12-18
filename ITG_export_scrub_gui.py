@@ -242,7 +242,9 @@ class MainPage(AppPage):
         # Unzip input
         try:
             with ZipFile(input_zip, 'r') as in_zip:
-                in_zip.extractall(export_dir)
+                for file in in_zip.infolist():
+                    if file.filename in keep_csv:
+                        in_zip.extract(file, export_dir)
         except FileNotFoundError:
             self.log_error(error_log, f'{input_zip} not found.'
                                       f'More Info: {traceback.format_exc()}'
@@ -348,6 +350,24 @@ class MainPage(AppPage):
                               'installed_by',
                               'Equipment make & Model',
                               'resource_type', 'resource_id',
+                              'configuration_status', 'asset_tag',
+                              'DHCP Server', 'DHCP Scope',
+                              'DHCP Reservations', 'DNS Server(s)',
+                              'Default Gateway Device', 'Firewall',
+                              'Access Point(s)',
+                              'Wireless Controller (Application)',
+                              'Wireless Controller (Hardware)',
+                              'Management Credentials', 'VLAN #',
+                              'Backup Radar Report Recipients (Email)'
+                              ' or Link Contacts',
+                              'Backup Radar Reporting Notes',
+                              'Backup Server/NAS Management Login',
+                              'Local Backup Encryption Key',
+                              'Backup Copy Job Name',
+                              'Backup Copy Target',
+                              'Backup Copy Encryption',
+                              'Configuration Backup to Cloud Connect?',
+                              'SMB Login',
                               ]
 
             # Continue with unpacking current csv to list of lists
@@ -521,6 +541,7 @@ class MainPage(AppPage):
                                      self._vars['Post Job'].get(),
                                      self._vars['Zip?'].get(),
                                      )
+                self.input_file = ''
             else:
                 for file in os.listdir(self.input_folder):
                     self.status.set(f'Processing {file} ...')
@@ -533,6 +554,7 @@ class MainPage(AppPage):
                         )
                         if self.err_present == 1:
                             self.err_count += 1
+                self.input_folder = ''
 
             if self.err_count == 0 and self.err_present == 0:
                 self.status.set('Processing Complete. '
@@ -542,6 +564,7 @@ class MainPage(AppPage):
                                 'but errors are present.'
                                 '\nPlease refer to the error file which will '
                                 'be contained in the target directory.')
+                self.err_count = 0
 
     def _on_target(self):
         """Command to choose a target folder/file"""
@@ -595,7 +618,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title(" TPG ITG Export Scrubber v1.56")
+        self.title(" TPG ITG Export Scrubber v1.61")
         self.minsize(400, 350)
         self.main_page()
 

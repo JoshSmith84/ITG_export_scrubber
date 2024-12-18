@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.56: Switched from using zipfile module to zipfile36 to solve long file path issues">
-      <change afterPath="$PROJECT_DIR$/enable_long_pathnames.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.56.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ITG_export_scrub_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ITG_export_scrub_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/TPG ITG Export Scrubber 1.12.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.5.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.51.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.54.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.55.exe" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -222,7 +215,7 @@
       <workItem from="1734281685691" duration="18000" />
       <workItem from="1734444461769" duration="14000" />
       <workItem from="1734444673763" duration="15512000" />
-      <workItem from="1734532506701" duration="4150000" />
+      <workItem from="1734532506701" duration="10508000" />
     </task>
     <task id="LOCAL-00001" summary="*">
       <option name="closed" value="true" />
@@ -448,7 +441,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734544556748</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="v1.56: Switched from using zipfile module to zipfile36 to solve long file path issues">
+      <option name="closed" value="true" />
+      <created>1734544780229</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1734544780229</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -511,7 +512,7 @@
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrubber.coverage" NAME="ITG_export_scrubber Coverage Results" MODIFIED="1733788502062" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734218216520" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$pandas_table_test.coverage" NAME="pandas table test Coverage Results" MODIFIED="1734198969534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Test files" />
-    <SUITE FILE_PATH="coverage/ITG_export_scrub_gui_py$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734543036060" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ITG_export_scrub_gui_py$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734564238551" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_scrub_with_pandas_test.coverage" NAME="ITG scrub with pandas test Coverage Results" MODIFIED="1734196325151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Test files" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$html_table_test.coverage" NAME="html table test Coverage Results" MODIFIED="1734096311733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
