@@ -245,7 +245,7 @@ class MainPage(AppPage):
                 in_zip.extractall(export_dir)
         except FileNotFoundError:
             self.log_error(error_log, f'{input_zip} not found.'
-                                      f'Traceback: {traceback.format_exc()}'
+                                      f'More Info: {traceback.format_exc()}'
                                       f'\n\n'
                            )
             return 1
@@ -253,14 +253,14 @@ class MainPage(AppPage):
             self.log_error(error_log, f'{input_zip} '
                                       f'permission denied.'
                                       f' Try Running again as admin'
-                                      f'Traceback: {traceback.format_exc()}'
+                                      f'More Info: {traceback.format_exc()}'
                                       f'\n\n'
                            )
             return 1
         except in_zip.BadZipFile:
             self.log_error(error_log, f'{input_zip}'
                                       f' may be corrupt.'
-                                      f'Traceback: {traceback.format_exc()}'
+                                      f'More Info: {traceback.format_exc()}'
                                       f'\n\n'
                            )
             return 1
@@ -269,7 +269,7 @@ class MainPage(AppPage):
                                       f'caused an OS error. '
                                       f' Drive may be full or '
                                       f'path is no longer valid.'
-                                      f'Traceback: {traceback.format_exc()}'
+                                      f'More Info: {traceback.format_exc()}'
                                       f'\n\n'
                            )
             return 1
@@ -318,7 +318,7 @@ class MainPage(AppPage):
                                           f'deleting old {wb_file}, '
                                           f' but permission denied.'
                                           f' Try running again as admin. '
-                                          f'Traceback: {traceback.format_exc()}'
+                                          f'More Info: {traceback.format_exc()}'
                                           f'\n\n'
                                )
                 shutil.rmtree(export_dir)
@@ -476,7 +476,7 @@ class MainPage(AppPage):
                                           f'deleting {input_zip}, '
                                           f' but permission denied.'
                                           f' Try running again as admin'
-                                          f'Traceback: {traceback.format_exc()}'
+                                          f'More Info: {traceback.format_exc()}'
                                           f'\n\n'
                                )
                 return 1
@@ -498,7 +498,7 @@ class MainPage(AppPage):
                                           f'as it has been zipped, '
                                           f' but permission denied.'
                                           f' Try running again as admin'
-                                          f'Traceback: {traceback.format_exc()}'
+                                          f'More Info: {traceback.format_exc()}'
                                           f'\n\n'
                                )
         return 0
