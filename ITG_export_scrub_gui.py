@@ -27,6 +27,7 @@ import logging
 import datetime
 import pandas as pd
 import xlsxwriter
+import traceback
 
 
 # Logging config
@@ -244,24 +245,33 @@ class MainPage(AppPage):
                 in_zip.extractall(export_dir)
         except FileNotFoundError:
             self.log_error(error_log, f'{input_zip} not found.'
+                                      f'Traceback: {traceback.format_exc()}'
+                                      f'\n\n'
                            )
             return 1
         except PermissionError:
             self.log_error(error_log, f'{input_zip} '
                                       f'permission denied.'
                                       f' Try Running again as admin'
+                                      f'Traceback: {traceback.format_exc()}'
+                                      f'\n\n'
                            )
             return 1
         except in_zip.BadZipFile:
             self.log_error(error_log, f'{input_zip}'
                                       f' may be corrupt.'
+                                      f'Traceback: {traceback.format_exc()}'
+                                      f'\n\n'
                            )
             return 1
         except OSError:
             self.log_error(error_log, f'{input_zip} '
                                       f'caused an OS error. '
                                       f' Drive may be full or '
-                                      f'path is no longer valid.')
+                                      f'path is no longer valid.'
+                                      f'Traceback: {traceback.format_exc()}'
+                                      f'\n\n'
+                           )
             return 1
 
         # Gather list of files
@@ -307,7 +317,9 @@ class MainPage(AppPage):
                 self.log_error(error_log, f'Attempted '
                                           f'deleting old {wb_file}, '
                                           f' but permission denied.'
-                                          f' Try running again as admin'
+                                          f' Try running again as admin. '
+                                          f'Traceback: {traceback.format_exc()}'
+                                          f'\n\n'
                                )
                 shutil.rmtree(export_dir)
                 return 1
@@ -464,6 +476,8 @@ class MainPage(AppPage):
                                           f'deleting {input_zip}, '
                                           f' but permission denied.'
                                           f' Try running again as admin'
+                                          f'Traceback: {traceback.format_exc()}'
+                                          f'\n\n'
                                )
                 return 1
 
@@ -484,6 +498,8 @@ class MainPage(AppPage):
                                           f'as it has been zipped, '
                                           f' but permission denied.'
                                           f' Try running again as admin'
+                                          f'Traceback: {traceback.format_exc()}'
+                                          f'\n\n'
                                )
         return 0
 
@@ -525,8 +541,7 @@ class MainPage(AppPage):
                 self.status.set('Processing Complete, '
                                 'but errors are present.'
                                 '\nPlease refer to the error file which will '
-                                'be contained in the directory where the '
-                                'target file(s) resided.')
+                                'be contained in the target directory.')
 
     def _on_target(self):
         """Command to choose a target folder/file"""
@@ -580,7 +595,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title(" TPG ITG Export Scrubber v1.54")
+        self.title(" TPG ITG Export Scrubber v1.55")
         self.minsize(400, 350)
         self.main_page()
 
