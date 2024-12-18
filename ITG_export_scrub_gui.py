@@ -17,7 +17,7 @@ import shutil
 import csv
 import unicodedata
 from bs4 import BeautifulSoup
-from zipfile import ZipFile
+from zipfile36 import ZipFile
 from openpyxl import Workbook, load_workbook
 import tkinter as tk
 from tkinter import ttk
@@ -595,7 +595,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title(" TPG ITG Export Scrubber v1.55")
+        self.title(" TPG ITG Export Scrubber v1.56")
         self.minsize(400, 350)
         self.main_page()
 
