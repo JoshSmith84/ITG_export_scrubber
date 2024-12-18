@@ -17,7 +17,7 @@ import shutil
 import csv
 import unicodedata
 from bs4 import BeautifulSoup
-from zipfile import ZipFile
+from zipfile36 import ZipFile
 from openpyxl import Workbook, load_workbook
 import tkinter as tk
 from tkinter import ttk
@@ -27,6 +27,7 @@ import logging
 import datetime
 import pandas as pd
 import xlsxwriter
+import traceback
 
 
 # Logging config
@@ -126,7 +127,7 @@ class MainPage(AppPage):
         super().__init__(*args, **kwargs)
         self._vars = {'Batch Size': tk.StringVar(None, 'Folder'),
                       'Post Job': tk.StringVar(None, 'Delete'),
-                      'Zip?': tk.StringVar(None, 'Yes'),
+                      'Zip?': tk.StringVar(None, 'No'),
                     }
 
         self.input_folder = ''
@@ -214,11 +215,24 @@ class MainPage(AppPage):
                           '<tbody>', '<td>', '<ol>', '<li>',
                           '<a>', '<ul>',
                           ]
+        sorters = ['Name', 'name', 'Hostname', 'Printer Name',
+                   'Description', 'Vendor Name'
+                   ]
 
+        # Replace slashes with correct Windows
+        # (as part of win11 issue troubleshooting)
         explode_path = input_zip.split('/')
-        explode_path.pop(-1)
-        working_dir = '/'.join(explode_path) + '/'
-        export_dir = working_dir + 'itg_unzipped/'
+        new_explode_path = [i.replace('/', '\\') for i in explode_path]
+        input_zip = '\\'.join(new_explode_path)
+
+        # Check is zip path and absoluter path match, if not, change to abs path
+        if input_zip != os.path.abspath(input_zip):
+            input_zip = os.path.abspath(input_zip)
+
+        # Prep the rest of the processing paths
+        new_explode_path.pop(-1)
+        working_dir = '\\'.join(new_explode_path) + '\\'
+        export_dir = working_dir + 'itg_unzipped\\'
         error_log = working_dir + (f'ITG_scrubber_errors_'
                                    f'{datetime.date.today()}.txt')
 
@@ -231,24 +245,33 @@ class MainPage(AppPage):
                 in_zip.extractall(export_dir)
         except FileNotFoundError:
             self.log_error(error_log, f'{input_zip} not found.'
+                                      f'More Info: {traceback.format_exc()}'
+                                      f'\n\n'
                            )
             return 1
         except PermissionError:
             self.log_error(error_log, f'{input_zip} '
                                       f'permission denied.'
                                       f' Try Running again as admin'
+                                      f'More Info: {traceback.format_exc()}'
+                                      f'\n\n'
                            )
             return 1
         except in_zip.BadZipFile:
             self.log_error(error_log, f'{input_zip}'
                                       f' may be corrupt.'
+                                      f'More Info: {traceback.format_exc()}'
+                                      f'\n\n'
                            )
             return 1
         except OSError:
             self.log_error(error_log, f'{input_zip} '
                                       f'caused an OS error. '
                                       f' Drive may be full or '
-                                      f'path is no longer valid.')
+                                      f'path is no longer valid.'
+                                      f'More Info: {traceback.format_exc()}'
+                                      f'\n\n'
+                           )
             return 1
 
         # Gather list of files
@@ -294,13 +317,14 @@ class MainPage(AppPage):
                 self.log_error(error_log, f'Attempted '
                                           f'deleting old {wb_file}, '
                                           f' but permission denied.'
-                                          f' Try running again as admin'
+                                          f' Try running again as admin. '
+                                          f'More Info: {traceback.format_exc()}'
+                                          f'\n\n'
                                )
                 shutil.rmtree(export_dir)
                 return 1
         wb.save(wb_file)
 
-        # (function; inner loop)
         # Iterate through every remaining csv,
         # and make changes in memory
         for file in input_files:
@@ -323,7 +347,7 @@ class MainPage(AppPage):
                               'Printer Management Login',
                               'installed_by',
                               'Equipment make & Model',
-                              'Printer Name',
+                              'resource_type', 'resource_id',
                               ]
 
             # Continue with unpacking current csv to list of lists
@@ -400,10 +424,15 @@ class MainPage(AppPage):
                 for i, value in enumerate(row):
                     columns_dict.setdefault(new_headers[i], []).append(value)
             df = pd.DataFrame(columns_dict)
-
+            # Sort any sheets if name column is present and
             # Populate the Pandas dataframe into a dictionary to
             # populate the workbook after all data is processed
-            sheets_dict.update({file.split('.')[0]: df})
+            if new_headers[0] in sorters:
+                sheets_dict.update({file.split('.')[0]: df.sort_values(
+                    by=new_headers[0])}
+                )
+            else:
+                sheets_dict.update({file.split('.')[0]: df})
 
         # Populate Workbook with all sheets/tables and data
         wb = xlsxwriter.Workbook(wb_file)
@@ -447,6 +476,8 @@ class MainPage(AppPage):
                                           f'deleting {input_zip}, '
                                           f' but permission denied.'
                                           f' Try running again as admin'
+                                          f'More Info: {traceback.format_exc()}'
+                                          f'\n\n'
                                )
                 return 1
 
@@ -467,6 +498,8 @@ class MainPage(AppPage):
                                           f'as it has been zipped, '
                                           f' but permission denied.'
                                           f' Try running again as admin'
+                                          f'More Info: {traceback.format_exc()}'
+                                          f'\n\n'
                                )
         return 0
 
@@ -481,7 +514,8 @@ class MainPage(AppPage):
                                 'Please choose a target zip file...')
         else:
             if self.input_folder == '':
-                self.status.set(f'Processing {self.input_file} ...')
+                self.status.set(
+                    f'Processing {self.input_file} ...')
                 Application.update(self)
                 self.err_present = self.process_exports(self.input_file,
                                      self._vars['Post Job'].get(),
@@ -507,8 +541,7 @@ class MainPage(AppPage):
                 self.status.set('Processing Complete, '
                                 'but errors are present.'
                                 '\nPlease refer to the error file which will '
-                                'be contained in the directory where the '
-                                'target file(s) resided.')
+                                'be contained in the target directory.')
 
     def _on_target(self):
         """Command to choose a target folder/file"""
@@ -562,7 +595,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title("ITG Export Scrubber v1.51")
+        self.title(" TPG ITG Export Scrubber v1.56")
         self.minsize(400, 350)
         self.main_page()
 
