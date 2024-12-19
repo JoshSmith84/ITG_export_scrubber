@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.61: Unzip only what is needed. Also set targets to empty string after processing as well as reset error count. Edited list of columns to always delete as well.">
-      <change afterPath="$PROJECT_DIR$/TPG ITG Export Scrubber Specification.rst" afterDir="false" />
+    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.65: Documentation and code clean up. Fixed a possible bug where if all rows were archived in a sheet, the program would crash. Now it will simply skip the sheet. Suppressed extra blank dialog box that pops up during file/folder dialog. During file dialog, now user can only choose zip files. After v1.61 change to only extract what is needed, the program would crash if encountering a non-export. This is now fixed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ITG_export_scrub_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ITG_export_scrub_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.56.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.61.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/executables/TPG ITG Export Scrubber v1.65.exe" beforeDir="false" afterPath="$PROJECT_DIR$/executables/TPG ITG Export Scrubber v1.65.exe" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +217,7 @@
       <workItem from="1734444461769" duration="14000" />
       <workItem from="1734444673763" duration="15512000" />
       <workItem from="1734532506701" duration="12494000" />
-      <workItem from="1734616067847" duration="6976000" />
+      <workItem from="1734616067847" duration="8852000" />
     </task>
     <task id="LOCAL-00001" summary="*">
       <option name="closed" value="true" />
@@ -469,7 +467,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734566046807</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="v1.65: Documentation and code clean up. Fixed a possible bug where if all rows were archived in a sheet, the program would crash. Now it will simply skip the sheet. Suppressed extra blank dialog box that pops up during file/folder dialog. During file dialog, now user can only choose zip files. After v1.61 change to only extract what is needed, the program would crash if encountering a non-export. This is now fixed">
+      <option name="closed" value="true" />
+      <created>1734623588776</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1734623588776</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -487,7 +493,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="*" />
     <MESSAGE value="First" />
     <MESSAGE value="First working iteration of script. Still need to add error handling, GUI, and formatting sheets." />
     <MESSAGE value="Fixed file replacement check" />
@@ -512,7 +517,8 @@
     <MESSAGE value="v1.56: Switched from using zipfile module to zipfile36 to solve long file path issues" />
     <MESSAGE value="v1.61: Changed how the files are unzipped. Such a simple fix to simply only unzip what is needed... Also set targets to empty string after processing. Edited list of columns to always delete as well." />
     <MESSAGE value="v1.61: Unzip only what is needed. Also set targets to empty string after processing as well as reset error count. Edited list of columns to always delete as well." />
-    <option name="LAST_COMMIT_MESSAGE" value="v1.61: Unzip only what is needed. Also set targets to empty string after processing as well as reset error count. Edited list of columns to always delete as well." />
+    <MESSAGE value="v1.65: Documentation and code clean up. Fixed a possible bug where if all rows were archived in a sheet, the program would crash. Now it will simply skip the sheet. Suppressed extra blank dialog box that pops up during file/folder dialog. During file dialog, now user can only choose zip files. After v1.61 change to only extract what is needed, the program would crash if encountering a non-export. This is now fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.65: Documentation and code clean up. Fixed a possible bug where if all rows were archived in a sheet, the program would crash. Now it will simply skip the sheet. Suppressed extra blank dialog box that pops up during file/folder dialog. During file dialog, now user can only choose zip files. After v1.61 change to only extract what is needed, the program would crash if encountering a non-export. This is now fixed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

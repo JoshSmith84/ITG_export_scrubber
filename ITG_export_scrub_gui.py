@@ -1,5 +1,5 @@
 """
-ITG_export_scrubber.py
+ITG_export_scrub_gui.py
 
 Author: Josh Smith
 
@@ -278,13 +278,6 @@ class MainPage(AppPage):
         else:
             input_files = [f for f in raw_input_files]
 
-        # If there are no input files, ignore the input_zip
-        if len(input_files) < 1:
-            self.status.set(f'{input_zip} is not a valid ITG export')
-            Application.update(self)
-            shutil.rmtree(export_dir)
-            return 0
-
         # From any of the csvs, pull customer name from column B
         with open(export_dir + input_files[0], 'r',
                   encoding='utf-8') as csv_file:
@@ -346,9 +339,11 @@ class MainPage(AppPage):
                         for i in html_detection:
                             if i in cell:
                                 cell = BeautifulSoup(
-                                    cell, 'lxml').text
+                                    cell, 'lxml'
+                                ).text
                         cell = unicodedata.normalize(
-                            'NFKD', cell)
+                            'NFKD', cell
+                        )
                         new_row.append(cell)
                     working_rows.append(new_row)
 
@@ -373,10 +368,6 @@ class MainPage(AppPage):
                     del working_rows[top_index_current - index]
                 if configuration_status_index != 0:
                     if value[configuration_status_index] != 'Active':
-                        logging.debug(
-                            f'Deleting File: {file}. config status index #:'
-                            f' {configuration_status_index}'
-                            f'Value: {value}\n')
                         del working_rows[top_index_current - index]
 
             # Find empty columns
@@ -410,8 +401,6 @@ class MainPage(AppPage):
             # Sort any sheets if name column is present and
             # Populate the Pandas dataframe into a dictionary to
             # populate the workbook after all data is processed
-            if new_headers[0] in sorters:
-                print('')
             if len(new_headers) > 0:
                 if new_headers[0] in sorters:
                     sheets_dict.update({file.split('.')[0]: df.sort_values(
