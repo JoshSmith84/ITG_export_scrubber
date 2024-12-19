@@ -7,8 +7,9 @@ Purpose: Stage ITG export data into a single workbook per client with
 separate worksheets based on input data csv's. Format cells based on
 width of widest string, freeze header row/format as a table,
 and zip for sending. Also edit cell data to remove html, unicode issues,
- and leave only readable data.
- """
+and leave only readable data.
+See 'TPG ITG Export Scrubber Specification.rst' for more info.
+"""
 
 # imports
 import os
@@ -30,16 +31,6 @@ import xlsxwriter
 import traceback
 
 
-# Logging config
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %'
-                                                '(levelname)s - %'
-                                                '(message)s'
-                    )
-
-# Logging trigger
-logging.disable(logging.CRITICAL)
-
-
 class LabelInput(tk.Frame):
     """A widget containing a label and input together.
     Credit: Alan D. Moore "Python GUI Programming with Tkinter"""
@@ -51,10 +42,6 @@ class LabelInput(tk.Frame):
         super().__init__(parent, **kwargs)
         input_args = input_args or {}
         label_args = label_args or {}
-        # The above statements say if label_args
-        # or input_args are not None,
-        # they are what was passed during init.
-        # However, if they are None, then make them empty dicts
         self.variable = var
         self.variable.label_widget = self
 
@@ -135,6 +122,7 @@ class MainPage(AppPage):
         self.err_present = 0
         self.err_count = 0
 
+        # Initialize Main Page GUI
         size_default = self._add_frame(
             'Processing a folder or single file?'
         )
@@ -202,6 +190,7 @@ class MainPage(AppPage):
         1 means error log is present.
         """
 
+        # List of CSV's to extract. Ignore all else
         keep_csv = [
             'applications-licensing.csv', 'backup.csv',
             'backups-managed.csv',
@@ -210,26 +199,24 @@ class MainPage(AppPage):
             'email.csv', 'file-sharing.csv', 'internet-wan.csv',
             'lan.csv', 'passwords.csv', 'printing.csv',
             'vendors.csv', 'voice-pbx-fax.csv', 'wireless.csv',
-        ]
+                    ]
+
+        # Common HTML strings. If found in a cell, BeautifulSoup will convert
         html_detection = ['<div>', '<br>', '<p>', '<tr>',
                           '<tbody>', '<td>', '<ol>', '<li>',
                           '<a>', '<ul>',
                           ]
+
+        # Column names that if left in first column after processing,
+        # should be sorted by in the final sheet
         sorters = ['Name', 'name', 'Hostname', 'Printer Name',
                    'Description', 'Vendor Name'
                    ]
 
-        # Replace slashes with correct Windows
-        # (as part of win11 issue troubleshooting)
+        # Prep the processing paths
         explode_path = input_zip.split('/')
         new_explode_path = [i.replace('/', '\\') for i in explode_path]
         input_zip = '\\'.join(new_explode_path)
-
-        # Check is zip path and absoluter path match, if not, change to abs path
-        if input_zip != os.path.abspath(input_zip):
-            input_zip = os.path.abspath(input_zip)
-
-        # Prep the rest of the processing paths
         new_explode_path.pop(-1)
         working_dir = '\\'.join(new_explode_path) + '\\'
         export_dir = working_dir + 'itg_unzipped\\'
@@ -246,7 +233,7 @@ class MainPage(AppPage):
                     if file.filename in keep_csv:
                         in_zip.extract(file, export_dir)
         except FileNotFoundError:
-            self.log_error(error_log, f'{input_zip} not found.'
+            self.log_error(error_log, f'{input_zip} not found. '
                                       f'More Info: {traceback.format_exc()}'
                                       f'\n\n'
                            )
@@ -254,14 +241,14 @@ class MainPage(AppPage):
         except PermissionError:
             self.log_error(error_log, f'{input_zip} '
                                       f'permission denied.'
-                                      f' Try Running again as admin'
+                                      f' Try Running again as admin. '
                                       f'More Info: {traceback.format_exc()}'
                                       f'\n\n'
                            )
             return 1
         except in_zip.BadZipFile:
             self.log_error(error_log, f'{input_zip}'
-                                      f' may be corrupt.'
+                                      f' may be corrupt. '
                                       f'More Info: {traceback.format_exc()}'
                                       f'\n\n'
                            )
@@ -270,36 +257,33 @@ class MainPage(AppPage):
             self.log_error(error_log, f'{input_zip} '
                                       f'caused an OS error. '
                                       f' Drive may be full or '
-                                      f'path is no longer valid.'
+                                      f'path is no longer valid. '
                                       f'More Info: {traceback.format_exc()}'
                                       f'\n\n'
                            )
             return 1
 
-        # Gather list of files
-        input_files = [f for f in os.listdir(export_dir)]
+        # Check if the zip is a valid export(export_dir will not exist)
+        if os.path.exists(export_dir):
+            # Gather list of files
+            raw_input_files = [f for f in os.listdir(export_dir)]
+        else:
+            self.status.set(f'{input_zip} is not a valid ITG export')
+            Application.update(self)
+            return 0
 
-        # Detect if backups-managed is present
-        delete_backup_csv = 0
-        if 'backups-managed.csv' in input_files:
-            delete_backup_csv += 1
-        logging.debug(f'original list: {input_files}\n')
+        # If Backup-managed is present, ignore backup
+        if 'backups-managed.csv' in raw_input_files:
+            input_files = [f for f in raw_input_files if f != 'backup.csv']
+        else:
+            input_files = [f for f in raw_input_files]
 
-        # Trim the list of working csvs down to what needs to be shared
-        top_index_input_files = len(input_files) - 1
-        for index, value in enumerate(reversed(input_files)):
-            if value not in keep_csv:
-                del input_files[top_index_input_files - index]
-                continue
-            elif delete_backup_csv == 1 and value == 'backup.csv':
-                del input_files[top_index_input_files - index]
-                continue
+        # If there are no input files, ignore the input_zip
         if len(input_files) < 1:
             self.status.set(f'{input_zip} is not a valid ITG export')
             Application.update(self)
             shutil.rmtree(export_dir)
             return 0
-        logging.debug(f'edited list: {input_files}\n')
 
         # From any of the csvs, pull customer name from column B
         with open(export_dir + input_files[0], 'r',
@@ -307,25 +291,6 @@ class MainPage(AppPage):
             headers = csv_file.readline().strip('\n').split(',')
             reader = csv.reader(csv_file)
             customer_name = list(reader)[0][1]
-            logging.debug(f'Customer name: {customer_name}\n')
-
-        # Create output Excel workbook file based on name of the company
-        wb = Workbook()
-        wb_file = working_dir + f'{customer_name}_export.xlsx'
-        if os.path.exists(wb_file):
-            try:
-                os.remove(wb_file)
-            except PermissionError:
-                self.log_error(error_log, f'Attempted '
-                                          f'deleting old {wb_file}, '
-                                          f' but permission denied.'
-                                          f' Try running again as admin. '
-                                          f'More Info: {traceback.format_exc()}'
-                                          f'\n\n'
-                               )
-                shutil.rmtree(export_dir)
-                return 1
-        wb.save(wb_file)
 
         # Iterate through every remaining csv,
         # and make changes in memory
@@ -398,8 +363,6 @@ class MainPage(AppPage):
                 if file == 'configurations.csv':
                     if value == 'configuration_status':
                         configuration_status_index = index
-            logging.debug(f'File: {file}. Archive index #: '
-                          f'{archive_index}\n')
 
             # go through every row and delete any row with archive set to 'Yes'
             # and any configuration status in configurations csv
@@ -424,7 +387,6 @@ class MainPage(AppPage):
                         i_empty += 1
                 if i_empty == len(working_rows):
                     delete_columns.append(headers[i])
-            logging.debug(f'Columns to delete: {delete_columns}\n')
 
             # Ignore all blank columns and columns to be "deleted"
             clean_rows = []
@@ -438,23 +400,43 @@ class MainPage(AppPage):
             # Clean up headers to match
             new_headers = [h for h in headers if h not in delete_columns]
 
-            # Convert the lists of lists to pandas DataFrame
+            # Convert the list of lists to a pandas DataFrame
             columns_dict = {}
             for row in clean_rows:
                 for i, value in enumerate(row):
                     columns_dict.setdefault(new_headers[i], []).append(value)
             df = pd.DataFrame(columns_dict)
+
             # Sort any sheets if name column is present and
             # Populate the Pandas dataframe into a dictionary to
             # populate the workbook after all data is processed
             if new_headers[0] in sorters:
-                sheets_dict.update({file.split('.')[0]: df.sort_values(
-                    by=new_headers[0])}
-                )
+                print('')
+            if len(new_headers) > 0:
+                if new_headers[0] in sorters:
+                    sheets_dict.update({file.split('.')[0]: df.sort_values(
+                        by=new_headers[0])}
+                    )
+                else:
+                    sheets_dict.update({file.split('.')[0]: df})
             else:
-                sheets_dict.update({file.split('.')[0]: df})
+                continue
 
         # Populate Workbook with all sheets/tables and data
+        wb_file = working_dir + f'{customer_name}_export.xlsx'
+        if os.path.exists(wb_file):
+            try:
+                os.remove(wb_file)
+            except PermissionError:
+                self.log_error(error_log, f'Attempted '
+                                          f'deleting old {wb_file}, '
+                                          f' but permission denied.'
+                                          f' Try running again as admin. '
+                                          f'More Info: {traceback.format_exc()}'
+                                          f'\n\n'
+                               )
+                shutil.rmtree(export_dir)
+                return 1
         wb = xlsxwriter.Workbook(wb_file)
         for key, value in sheets_dict.items():
             sheet = wb.add_worksheet(key)
@@ -467,7 +449,7 @@ class MainPage(AppPage):
         # Delete the unzipped original export
         shutil.rmtree(export_dir)
 
-        # Open workbook again with openpxl and make final adjustments
+        # Open workbook again with openpyxl and make final adjustments
         # Find and set uniform column width
         wb = load_workbook(wb_file)
         for sheet in wb.worksheets:
@@ -495,7 +477,7 @@ class MainPage(AppPage):
                 self.log_error(error_log, f'Attempted '
                                           f'deleting {input_zip}, '
                                           f' but permission denied.'
-                                          f' Try running again as admin'
+                                          f' Try running again as admin. '
                                           f'More Info: {traceback.format_exc()}'
                                           f'\n\n'
                                )
@@ -506,9 +488,21 @@ class MainPage(AppPage):
 
         # To zip or not to zip output file (needs to be zipped for email)
         if zip_task == 'Yes':
-            with ZipFile(
-                    f'{working_dir}/'
-                    f'{customer_name}_export.zip', 'w') as f:
+            out_zip = f'{working_dir}\\{customer_name}_export.zip'
+            if os.path.exists(out_zip):
+                try:
+                    os.remove(out_zip)
+                except PermissionError:
+                    self.log_error(error_log, f'Attempted '
+                                              f'deleting {input_zip}, '
+                                              f' but permission denied.'
+                                              f' Try running again as admin. '
+                                              f'More Info: '
+                                              f'{traceback.format_exc()}'
+                                              f'\n\n'
+                                   )
+                    return 1
+            with ZipFile(out_zip, 'w') as f:
                 f.write(wb_file, basename(wb_file))
             try:
                 os.remove(wb_file)
@@ -517,7 +511,7 @@ class MainPage(AppPage):
                                           f'deleting {wb_file} '
                                           f'as it has been zipped, '
                                           f' but permission denied.'
-                                          f' Try running again as admin'
+                                          f' Try running again as admin. '
                                           f'More Info: {traceback.format_exc()}'
                                           f'\n\n'
                                )
@@ -525,6 +519,8 @@ class MainPage(AppPage):
 
     def _on_run(self):
         """Command to run scrubber on target(s)"""
+
+        # Check if target is valid and update status
         if self.input_folder == '' and self.input_file == '':
             if self._vars['Batch Size'].get() == 'Folder':
                 self.status.set('No target chosen. \n'
@@ -533,19 +529,23 @@ class MainPage(AppPage):
                 self.status.set('No target chosen. \n'
                                 'Please choose a target zip file...')
         else:
+            # Request single file if 'Single File' radial is selected
             if self.input_folder == '':
                 self.status.set(
                     f'Processing {self.input_file} ...')
                 Application.update(self)
+                # Process target zip
                 self.err_present = self.process_exports(self.input_file,
                                      self._vars['Post Job'].get(),
                                      self._vars['Zip?'].get(),
                                      )
                 self.input_file = ''
             else:
+                # Request directory if 'Folder' radial is selected
                 for file in os.listdir(self.input_folder):
                     self.status.set(f'Processing {file} ...')
                     Application.update(self)
+                    # Process all zips in target directory
                     if '.zip' in file:
                         self.err_present = self.process_exports(
                             self.input_folder + '/' + file,
@@ -556,6 +556,7 @@ class MainPage(AppPage):
                             self.err_count += 1
                 self.input_folder = ''
 
+            # Check and alert on errors present during run
             if self.err_count == 0 and self.err_present == 0:
                 self.status.set('Processing Complete. '
                                 'Add more targets to continue.')
@@ -568,21 +569,30 @@ class MainPage(AppPage):
 
     def _on_target(self):
         """Command to choose a target folder/file"""
+
         if self._vars['Batch Size'].get() == 'Folder':
+            # Request target directory
             ch_folder_diag = tk.Tk()
+            ch_folder_diag.overrideredirect(True)
+            ch_folder_diag.attributes('-alpha', 0)
             ch_folder_diag.title('Choose target folder...')
             self.input_folder = filedialog.askdirectory(
                 title='Choose target folder...')
             ch_folder_diag.destroy()
             self.input_file = ''
         else:
+            # or request target zip file
             ch_file_diag = tk.Tk()
+            ch_file_diag.overrideredirect(True)
+            ch_file_diag.attributes('-alpha', 0)
             ch_file_diag.title('Choose target file...')
             self.input_file = filedialog.askopenfilename(
-                title='Choose target file...')
+                title='Choose target file...',
+                filetypes=[("Zip Files", "*.zip")])
             ch_file_diag.destroy()
             self.input_folder = ''
 
+        # Update status label with target info
         if self.input_folder != '':
             self.status.set(
                 f'Target folder set to: \n{self.input_folder}. '
@@ -618,7 +628,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title(" TPG ITG Export Scrubber v1.61")
+        self.title(" TPG ITG Export Scrubber v1.65")
         self.minsize(400, 350)
         self.main_page()
 
