@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.61: Changed how the files are unzipped. Such a simple fix to simply only unzip what is needed... Also set targets to empty string after processing. Edited list of columns to always delete as well." />
+    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.61: Unzip only what is needed. Also set targets to empty string after processing as well as reset error count. Edited list of columns to always delete as well.">
+      <change afterPath="$PROJECT_DIR$/TPG ITG Export Scrubber Specification.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITG_export_scrub_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ITG_export_scrub_gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.56.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/TPG ITG Export Scrubber v1.61.exe" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,24 +47,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.ITG scrub with pandas test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ITG_export_scrub_gui.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ITG_export_scrubber.executor&quot;: &quot;Run&quot;,
-    &quot;Python.html table test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.pandas table test.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.ITG scrub with pandas test.executor": "Run",
+    "Python.ITG_export_scrub_gui.executor": "Run",
+    "Python.ITG_export_scrubber.executor": "Run",
+    "Python.html table test.executor": "Run",
+    "Python.pandas table test.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "develop",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="U:\Joshua\Dropbox\Dropbox\Python\ITG_export_scrubber\Test files" />
@@ -212,7 +218,8 @@
       <workItem from="1734281685691" duration="18000" />
       <workItem from="1734444461769" duration="14000" />
       <workItem from="1734444673763" duration="15512000" />
-      <workItem from="1734532506701" duration="10929000" />
+      <workItem from="1734532506701" duration="12494000" />
+      <workItem from="1734616067847" duration="6976000" />
     </task>
     <task id="LOCAL-00001" summary="*">
       <option name="closed" value="true" />
@@ -454,7 +461,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734564690584</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="v1.61: Unzip only what is needed. Also set targets to empty string after processing as well as reset error count. Edited list of columns to always delete as well.">
+      <option name="closed" value="true" />
+      <created>1734566046807</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1734566046807</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -496,7 +511,8 @@
     <MESSAGE value="v1.55: Added traceback info to all errors for better debugging" />
     <MESSAGE value="v1.56: Switched from using zipfile module to zipfile36 to solve long file path issues" />
     <MESSAGE value="v1.61: Changed how the files are unzipped. Such a simple fix to simply only unzip what is needed... Also set targets to empty string after processing. Edited list of columns to always delete as well." />
-    <option name="LAST_COMMIT_MESSAGE" value="v1.61: Changed how the files are unzipped. Such a simple fix to simply only unzip what is needed... Also set targets to empty string after processing. Edited list of columns to always delete as well." />
+    <MESSAGE value="v1.61: Unzip only what is needed. Also set targets to empty string after processing as well as reset error count. Edited list of columns to always delete as well." />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.61: Unzip only what is needed. Also set targets to empty string after processing as well as reset error count. Edited list of columns to always delete as well." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -518,7 +534,7 @@
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrubber.coverage" NAME="ITG_export_scrubber Coverage Results" MODIFIED="1733788502062" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734218216520" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$pandas_table_test.coverage" NAME="pandas table test Coverage Results" MODIFIED="1734198969534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Test files" />
-    <SUITE FILE_PATH="coverage/ITG_export_scrub_gui_py$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734564238551" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ITG_export_scrub_gui_py$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734622884242" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_scrub_with_pandas_test.coverage" NAME="ITG scrub with pandas test Coverage Results" MODIFIED="1734196325151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Test files" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$html_table_test.coverage" NAME="html table test Coverage Results" MODIFIED="1734096311733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
