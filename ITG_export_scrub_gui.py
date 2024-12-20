@@ -518,7 +518,7 @@ class MainPage(AppPage):
                 self.status.set('No target chosen. \n'
                                 'Please choose a target zip file...')
         else:
-            # Request single file if 'Single File' radial is selected
+            # Process zip file(s)
             if self.input_folder == '':
                 self.status.set(
                     f'Processing {self.input_file} ...')
@@ -530,7 +530,6 @@ class MainPage(AppPage):
                                      )
                 self.input_file = ''
             else:
-                # Request directory if 'Folder' radial is selected
                 for file in os.listdir(self.input_folder):
                     self.status.set(f'Processing {file} ...')
                     Application.update(self)
