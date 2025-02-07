@@ -115,7 +115,7 @@ class MainPage(AppPage):
         self._vars = {'Batch Size': tk.StringVar(None, 'Folder'),
                       'Post Job': tk.StringVar(None, 'Delete'),
                       'Zip?': tk.StringVar(None, 'No'),
-                    }
+                      }
 
         self.input_folder = ''
         self.input_file = ''
@@ -200,12 +200,6 @@ class MainPage(AppPage):
             'lan.csv', 'passwords.csv', 'printing.csv',
             'vendors.csv', 'voice-pbx-fax.csv', 'wireless.csv',
                     ]
-
-        # Common HTML strings. If found in a cell, BeautifulSoup will convert
-        html_detection = ['<div>', '<br>', '<p>', '<tr>',
-                          '<tbody>', '<td>', '<ol>', '<li>',
-                          '<a>', '<ul>',
-                          ]
 
         # Column names that if left in first column after processing,
         # should be sorted by in the final sheet
@@ -336,11 +330,14 @@ class MainPage(AppPage):
                 for row in reader:
                     new_row = []
                     for cell in row:
-                        for i in html_detection:
-                            if i in cell:
-                                cell = BeautifulSoup(
-                                    cell, 'lxml'
-                                ).text
+                        # Detect html in cell and convert if so.
+                        if bool(
+                                BeautifulSoup(cell, 'lxml'
+                                              ).find()
+                                ):
+                            cell = BeautifulSoup(cell, 'lxml').text
+
+                        # normalize text
                         cell = unicodedata.normalize(
                             'NFKD', cell
                         )
@@ -616,7 +613,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title(" TPG ITG Export Scrubber v1.65")
+        self.title(" TPG ITG Export Scrubber v1.66")
         self.minsize(400, 350)
         self.main_page()
 
