@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.65: Documentation and code clean up. Fixed a possible bug where if all rows were archived in a sheet, the program would crash. Now it will simply skip the sheet. Suppressed extra blank dialog box that pops up during file/folder dialog. During file dialog, now user can only choose zip files. After v1.61 change to only extract what is needed, the program would crash if encountering a non-export. This is now fixed">
+    <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.66: Updated how html is detected in each cell.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ITG_export_scrub_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ITG_export_scrub_gui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/executables/TPG ITG Export Scrubber v1.65.exe" beforeDir="false" />
@@ -223,7 +223,7 @@
       <workItem from="1734730844922" duration="189000" />
       <workItem from="1734800999010" duration="80000" />
       <workItem from="1734802396479" duration="1649000" />
-      <workItem from="1738943185724" duration="3964000" />
+      <workItem from="1738943185724" duration="4659000" />
     </task>
     <task id="LOCAL-00001" summary="*">
       <option name="closed" value="true" />
@@ -497,7 +497,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734730896521</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="v1.66: Updated how html is detected in each cell.">
+      <option name="closed" value="true" />
+      <created>1738948096740</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1738948096740</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -515,7 +523,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="First" />
     <MESSAGE value="First working iteration of script. Still need to add error handling, GUI, and formatting sheets." />
     <MESSAGE value="Fixed file replacement check" />
     <MESSAGE value="Added some columns to delete, added remote-access.csv to the ignored csv list, and cleaned up code comments" />
@@ -540,7 +547,8 @@
     <MESSAGE value="v1.61: Changed how the files are unzipped. Such a simple fix to simply only unzip what is needed... Also set targets to empty string after processing. Edited list of columns to always delete as well." />
     <MESSAGE value="v1.61: Unzip only what is needed. Also set targets to empty string after processing as well as reset error count. Edited list of columns to always delete as well." />
     <MESSAGE value="v1.65: Documentation and code clean up. Fixed a possible bug where if all rows were archived in a sheet, the program would crash. Now it will simply skip the sheet. Suppressed extra blank dialog box that pops up during file/folder dialog. During file dialog, now user can only choose zip files. After v1.61 change to only extract what is needed, the program would crash if encountering a non-export. This is now fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="v1.65: Documentation and code clean up. Fixed a possible bug where if all rows were archived in a sheet, the program would crash. Now it will simply skip the sheet. Suppressed extra blank dialog box that pops up during file/folder dialog. During file dialog, now user can only choose zip files. After v1.61 change to only extract what is needed, the program would crash if encountering a non-export. This is now fixed" />
+    <MESSAGE value="v1.66: Updated how html is detected in each cell." />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.66: Updated how html is detected in each cell." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
