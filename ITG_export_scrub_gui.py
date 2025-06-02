@@ -19,12 +19,12 @@ import csv
 import unicodedata
 from bs4 import BeautifulSoup
 from zipfile36 import ZipFile
-from openpyxl import Workbook, load_workbook
+from openpyxl import load_workbook
+from openpyxl.styles import Alignment
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 import sys
-import logging
 import datetime
 import pandas as pd
 import xlsxwriter
@@ -33,7 +33,18 @@ import traceback
 
 class LabelInput(tk.Frame):
     """A widget containing a label and input together.
-    Credit: Alan D. Moore "Python GUI Programming with Tkinter"""
+    Credit: Alan D. Moore "Python GUI Programming with Tkinter"
+
+    Attributes:
+        parent (Any): Parent widget of this widget.
+        label (Any): Label of this widget.
+        var (Any): Variable assigned to this widget.
+        input_class: Any valid tkinter input type.
+                     Defaults to simply Entry if not specified.
+
+    Methods:
+         grid: Override grid to add default sticky values
+        """
 
     def __init__(
             self, parent, label, var, input_class=ttk.Entry,
@@ -75,20 +86,24 @@ class LabelInput(tk.Frame):
         self.columnconfigure(0, weight=1)
 
     def grid(self, sticky=(tk.E + tk.W), **kwargs):
-        """Override grid to add default sticky values"""
         super().grid(sticky=sticky, **kwargs)
 
 
 class AppPage(ttk.Frame):
-    """Application page class from which all other pages will inherit."""
+    """Application page class from which all other pages will inherit.
+
+    Attributes: None
+
+    Methods:
+        _add_frame: Add a label frame to the AppPage.
+        get: Retrieve data from all AppPage variables.
+        """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._vars = {}
 
     def _add_frame(self, label, cols=2):
-        """Add a label frame to the form
-        Credit: Alan D. Moore "Python GUI Programming with Tkinter"""
 
         frame = ttk.LabelFrame(self, text=label)
         frame.grid(sticky=tk.W + tk.E)
@@ -108,7 +123,18 @@ class AppPage(ttk.Frame):
 
 
 class MainPage(AppPage):
-    """Main Page to select options, change folder, and run"""
+    """Main Page to select options, change folder, and run
+
+    Attributes: None
+
+    Methods:
+        process_exports: Main processing method.
+        _on_run: Command to run scrubber on target(s).
+        _on_target: Command to choose a target folder/file.
+        log_error: Simple method for opening passed txt file
+        and appending message.
+        _on_quit: Command to quit program.
+        """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -192,13 +218,16 @@ class MainPage(AppPage):
 
         # List of CSV's to extract. Ignore all else
         keep_csv = [
-            'applications-licensing.csv', 'backup.csv',
+            'applications.csv',
+            'applications-licensing.csv', 'backups-and-replications.csv',
             'backups-managed.csv',
             'battery-backup-ups.csv', 'configurations.csv',
-            'domain-hosting.csv',
+            'domain-hosting.csv', 'domains.csv',
             'email.csv', 'file-sharing.csv', 'internet-wan.csv',
-            'lan.csv', 'passwords.csv', 'printing.csv',
-            'vendors.csv', 'voice-pbx-fax.csv', 'wireless.csv',
+            'lan.csv', 'passwords.csv', 'printing-environment.csv',
+            'vendor.csv', 'voice-fax.csv', 'wireless.csv',
+            'network-shares.csv', 'ssl-certificates.csv',
+            'network-share.csv',
                     ]
 
         # Column names that if left in first column after processing,
@@ -268,7 +297,9 @@ class MainPage(AppPage):
 
         # If Backup-managed is present, ignore backup
         if 'backups-managed.csv' in raw_input_files:
-            input_files = [f for f in raw_input_files if f != 'backup.csv']
+            input_files = [f for f in raw_input_files
+                           if f != 'backup-and-replications.csv'
+                           ]
         else:
             input_files = [f for f in raw_input_files]
 
@@ -286,40 +317,53 @@ class MainPage(AppPage):
             Application.update(self)
             # Reset columns to delete list
             # (columns that always are deleted/ignored)
+
+            # Much of the list is commented out while testing against change
+            # in the columns available.
+            # Slowly re-adding columns to always delete as needed
             delete_columns = ['id', 'organization', 'Category',
-                              'Business Impact',
                               'Client Subject Matter Expert',
                               'Importance', 'archived',
                               'Backup Estimated Start Date',
                               'FlexAssset Review Date',
-                              'FlexAsset Review Date',
                               'Backup Radar Reporting Schedule',
-                              'hostname', 'manufacturer',
-                              'position', 'contact', 'location',
+                              'contact', 'location',
                               'configuration_interfaces',
-                              'DHCP Exclusions', 'one_time_password',
-                              'Printer Management Login',
-                              'installed_by',
-                              'Equipment make & Model',
-                              'resource_type', 'resource_id',
-                              'configuration_status', 'asset_tag',
-                              'DHCP Server', 'DHCP Scope',
-                              'DHCP Reservations', 'DNS Server(s)',
-                              'Default Gateway Device', 'Firewall',
-                              'Access Point(s)',
-                              'Wireless Controller (Application)',
-                              'Wireless Controller (Hardware)',
-                              'Management Credentials', 'VLAN #',
-                              'Backup Radar Report Recipients (Email)'
-                              ' or Link Contacts',
-                              'Backup Radar Reporting Notes',
-                              'Backup Server/NAS Management Login',
-                              'Local Backup Encryption Key',
-                              'Backup Copy Job Name',
-                              'Backup Copy Target',
-                              'Backup Copy Encryption',
-                              'Configuration Backup to Cloud Connect?',
-                              'SMB Login',
+                              'Manufacturer',
+                              # 'DHCP Exclusions', 'one_time_password',
+                              # 'Printer Management Login',
+                              # 'installed_by',
+                              # 'Equipment make & Model',
+                              # 'resource_type', 'resource_id',
+                              # 'configuration_status', 'asset_tag',
+                              # 'DHCP Server', 'DHCP Scope',
+                              # 'DHCP Reservations', 'DNS Server(s)',
+                              # 'Default Gateway Device', 'Firewall',
+                              # 'Access Point(s)',
+                              # 'Wireless Controller (Application)',
+                              # 'Wireless Controller (Hardware)',
+                              # 'Management Credentials', 'VLAN #',
+                              # 'Backup Radar Report Recipients (Email)'
+                              # ' or Link Contacts',
+                              # 'Backup Radar Reporting Notes',
+                              # 'Backup Server/NAS Management Login',
+                              # 'Local Backup Encryption Key',
+                              # 'Backup Copy Job Name',
+                              # 'Backup Copy Target',
+                              # 'Backup Copy Encryption',
+                              # 'Configuration Backup to Cloud Connect?',
+                              # 'SMB Login', 'LOB App?', 'MFA/2FA',
+                              # 'SSO or AD Integration Enabled',
+                              # 'User Autoprovisioning',
+                              'Primary ISP',
+                              'DHCP WAN IP', 'Failover', 'SPF Enabled',
+                              'DKIM Enabled', 'MFA Enforcement',
+                              'Modern Authentication Enabled',
+                              'Archiving', 'DMARC Configured', 'Pax8',
+                              'Azure AD Sync (Office 365 AD User Sync)',
+                              'Google Apps Cloud Directory Sync',
+                              'Outbound Filtered', 'Conditional Access',
+                              'Security Defaults',
                               ]
 
             # Continue with unpacking current csv to list of lists
@@ -448,6 +492,7 @@ class MainPage(AppPage):
                             max_length = len(str(cell.value))
                     except:
                         pass
+                    cell.alignment = Alignment(wrap_text=True)
                 if max_length > 50:
                     max_length = 50
                 adjusted_width = (max_length + 2) * 1.2
@@ -613,7 +658,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
         self.m_page = ''
         self.main_label = ''
-        self.title(" TPG ITG Export Scrubber v1.66")
+        self.title(" TPG ITG Export Scrubber v1.7")
         self.minsize(400, 350)
         self.main_page()
 

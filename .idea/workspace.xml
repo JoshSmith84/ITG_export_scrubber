@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5b952a7-ff71-4d73-ba1e-cde5be983fca" name="Changes" comment="v1.66: Updated how html is detected in each cell.">
+      <change afterPath="$PROJECT_DIR$/ITG_Export_Scrubber/itg_scrub_pkg/Application.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ITG_Export_Scrubber/itg_scrub_pkg/MainPage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ITG_Export_Scrubber/itg_scrub_pkg/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ITG_Export_Scrubber/itg_scrub_pkg/process_exports.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ITG_Export_Scrubber/itg_scrub_pkg/widgets.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ITG_Export_Scrubber/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ITG_export_scrubber.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ITG_export_scrubber.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ITG_export_scrub_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ITG_export_scrub_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/executables/TPG ITG Export Scrubber v1.65.exe" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,54 +51,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.ITG scrub with pandas test.executor": "Run",
-    "Python.ITG_export_scrub_gui.executor": "Run",
-    "Python.ITG_export_scrubber.executor": "Run",
-    "Python.html table test.executor": "Run",
-    "Python.pandas table test.executor": "Debug",
-    "Python.test.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "develop",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.ITG scrub with pandas test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ITG_export_scrub_gui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ITG_export_scrubber.executor&quot;: &quot;Run&quot;,
+    &quot;Python.html table test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pandas table test.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
+    &quot;last_opened_file_path&quot;: &quot;U:/Joshua/Dropbox/Dropbox/Python/ITG_export_scrubber/ITG_Export_Scrubber/itg_scrub_pkg&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="U:\Joshua\Dropbox\Dropbox\Python\ITG_export_scrubber\ITG_Export_Scrubber\itg_scrub_pkg" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="U:\Joshua\Dropbox\Dropbox\Python\ITG_export_scrubber\Test files" />
     </key>
   </component>
   <component name="RunManager" selected="Python.ITG_export_scrub_gui">
-    <configuration name="ITG scrub with pandas test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="ITG_export_scrubber" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Test files" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Test files/ITG scrub with pandas test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="ITG_export_scrub_gui" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ITG_export_scrubber" />
       <option name="ENV_FILES" value="" />
@@ -102,8 +91,9 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11 (ITG_export_scrubber)" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -116,7 +106,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="html table test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ITG_export_scrubber" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -125,12 +115,35 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ITG_Export_Scrubber/itg_scrub_pkg" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="U:\Joshua\Dropbox\Dropbox\Python\ITG_export_scrubber\Test files\html table test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ITG_Export_Scrubber/itg_scrub_pkg/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ITG_export_scrubber" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ITG_Export_Scrubber" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ITG_Export_Scrubber/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -185,13 +198,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.ITG_export_scrub_gui" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.main (1)" />
+      <item itemvalue="Python.pandas table test" />
+      <item itemvalue="Python.test" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.ITG_export_scrub_gui" />
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.pandas table test" />
-        <item itemvalue="Python.ITG scrub with pandas test" />
-        <item itemvalue="Python.html table test" />
       </list>
     </recent_temporary>
   </component>
@@ -223,7 +243,19 @@
       <workItem from="1734730844922" duration="189000" />
       <workItem from="1734800999010" duration="80000" />
       <workItem from="1734802396479" duration="1649000" />
-      <workItem from="1738943185724" duration="4659000" />
+      <workItem from="1738943185724" duration="6615000" />
+      <workItem from="1739141468138" duration="9090000" />
+      <workItem from="1739197081526" duration="51000" />
+      <workItem from="1739198208424" duration="2128000" />
+      <workItem from="1739305936415" duration="1703000" />
+      <workItem from="1739390401668" duration="723000" />
+      <workItem from="1739456754469" duration="639000" />
+      <workItem from="1743017442014" duration="877000" />
+      <workItem from="1744402981310" duration="21000" />
+      <workItem from="1747668616281" duration="6441000" />
+      <workItem from="1747686126519" duration="9927000" />
+      <workItem from="1748555844766" duration="2818000" />
+      <workItem from="1748877248513" duration="3058000" />
     </task>
     <task id="LOCAL-00001" summary="*">
       <option name="closed" value="true" />
@@ -505,7 +537,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738948096740</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="v1.66: Updated how html is detected in each cell.">
+      <option name="closed" value="true" />
+      <created>1738948209950</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1738948209950</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -571,8 +611,10 @@
     <SUITE FILE_PATH="coverage/ITG_export_scrub_gui_py$test.coverage" NAME="test Coverage Results" MODIFIED="1738945559792" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1734218216520" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$pandas_table_test.coverage" NAME="pandas table test Coverage Results" MODIFIED="1734198969534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Test files" />
-    <SUITE FILE_PATH="coverage/ITG_export_scrub_gui_py$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1738946815872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ITG_export_scrub_gui_py$ITG_export_scrub_gui.coverage" NAME="ITG_export_scrub_gui Coverage Results" MODIFIED="1748879624849" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ITG_export_scrub_gui_py$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1739163674235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ITG_Export_Scrubber/itg_scrub_pkg" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$ITG_scrub_with_pandas_test.coverage" NAME="ITG scrub with pandas test Coverage Results" MODIFIED="1734196325151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Test files" />
+    <SUITE FILE_PATH="coverage/ITG_export_scrub_gui_py$main.coverage" NAME="main Coverage Results" MODIFIED="1747669165083" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ITG_Export_Scrubber" />
     <SUITE FILE_PATH="coverage/ITG_export_scrubber$html_table_test.coverage" NAME="html table test Coverage Results" MODIFIED="1734096311733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
